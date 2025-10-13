@@ -6,7 +6,7 @@ const page = async () => {
 
   return (
     <div>
-      Implemented Light/Dark Mode
+      Fixed global.css
       
       
     </div>
