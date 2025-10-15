@@ -55,6 +55,17 @@ const workSans = localFont({
   variable: "--font-work-sans",
 });
 
+const cursive = localFont({
+  src: [
+    {
+      path: "./fonts/Cursive-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    }
+  ],
+  variable: "--font-cursive",
+});
+
 export const metadata: Metadata = {
   title: "IdeaLink | Pitch and Grow Stratup",
   description: "This app connect inovators with investors to grow their startup",
@@ -67,7 +78,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={workSans.variable}>
+      <body className={`${workSans.variable} ${cursive.variable}`}>
         <ThemeProvider
             attribute="class"
             defaultTheme="system"
