@@ -8,7 +8,7 @@ export default function SignOut() {
         await signOut()
       }}
     >
-      <button type="submit" className="border-1 cursor-pointer px-2 py-1 rounded-2xl bg-pink-200 font-semibold text-black">Log Out</button>
+      <button type="submit" className="cursor-pointer">Sign Out</button>
     </form>
   )
 }

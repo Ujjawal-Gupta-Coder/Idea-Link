@@ -1,40 +1,28 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
+import { useTheme } from "next-themes";
 
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+export default function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
 
-export default function ModeToggle() {
-  const { setTheme } = useTheme()
+  const toggle = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
-          <Sun className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
+    <button
+      onClick={toggle}
+      aria-label="Toggle theme"
+      className="relative cursor-pointer inline-flex h-12 w-24 items-center rounded-full bg-gray-300 dark:bg-gray-700 p-1 transition-colors duration-300 hover:ring-2 hover:ring-indigo-500"
+    >
+      {/* Sliding circle */}
+      <span
+        className={"absolute left-1 h-10 w-10 rounded-full bg-white shadow-md transform transition-transform duration-300 dark:translate-x-12 dark:bg-gray-900"}
+      />
+
+      {/* Sun & Moon icons */} 
+      <span className="absolute left-2 text-yellow-400 text-lg">{"☀️"}</span>
+      <span className="absolute right-2 text-gray-800 dark:text-gray-200 text-lg">{"🌙"}</span>
+    </button>
+  );
 }
