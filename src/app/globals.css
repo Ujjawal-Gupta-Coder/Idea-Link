@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
-
 @import "tailwindcss";
 
 @plugin "@tailwindcss/typography";
@@ -13,6 +11,7 @@
 
   /*  Fonts */
   --font-work-sans: var(--font-work-sans);
+  --font-cursive: var(--font-cursive);
 
   /* Border Radius */
   --radius-lg: var(--radius);
@@ -139,14 +138,14 @@
     @apply font-normal text-sm text-white-100/80;
   }
 
-  .pink_container {
+  .hero_container {
     @apply w-full bg-primary min-h-[530px] flex justify-center items-center flex-col py-10 px-6;
     background-image: linear-gradient(
             to right,
-            transparent 49.5%,
-            rgba(251, 232, 67, 0.2) 49.5%,
-            rgba(251, 232, 67, 0.6) 50.5%,
-            transparent 50.5%
+            transparent 48.5%,
+            rgba(251, 232, 67, 0.2) 48.5%,
+            rgba(251, 232, 67, 0.6) 51.5%,
+            transparent 51.5%
     );
     background-size: 5% 100%;
     background-position: center;
