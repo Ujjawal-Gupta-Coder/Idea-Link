@@ -57,7 +57,7 @@
   --white: #FFFFFF;
   --white-100: #F7F7F7;
 
-  -border: oklch(0.922 0 0);
+  --border: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
 }
 
@@ -84,7 +84,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-black text-white font-work-sans;
+    @apply bg-white text-black font-work-sans;
   }
 }
 

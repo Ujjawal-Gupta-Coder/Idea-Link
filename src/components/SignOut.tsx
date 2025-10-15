@@ -1,5 +1,4 @@
 import { signOut } from "@/auth"
-import { Button } from "./ui/button"
  
 export default function SignOut() {
   return (
@@ -9,7 +8,7 @@ export default function SignOut() {
         await signOut()
       }}
     >
-      <Button type="submit" variant="destructive">Log Out</Button>
+      <button type="submit" className="cursor-pointer">Sign Out</button>
     </form>
   )
 }

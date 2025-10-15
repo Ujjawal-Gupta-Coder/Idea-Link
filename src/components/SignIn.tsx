@@ -1,5 +1,6 @@
 
 import { signIn } from "@/auth"
+import { Button } from "./ui/button"
  
 export default function SignIn() {
   return (
@@ -9,7 +10,9 @@ export default function SignIn() {
         await signIn("google", { redirectTo: "/" })
       }}
     >
-      <button type="submit" className="border-1 cursor-pointer px-2 py-1 rounded-2xl bg-pink-200 font-semibold text-black">Signin with Google</button>
+      <Button type="submit" className="rounded-xl h-12 w-24 text-lg text-black hover:bg-primary bg-secondary cursor-pointer" > 
+        Sign In
+      </Button>
     </form>
   )
 } 
