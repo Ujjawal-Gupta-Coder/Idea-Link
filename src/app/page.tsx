@@ -1,5 +1,6 @@
-const page = async () => {
+import SearchForm from "@/components/SearchForm"
 
+const page = async ( ) => {
   return (
     <>
     <section className="hero_container">
@@ -12,7 +13,7 @@ const page = async () => {
           Showcase your innovation, inspire investors, and turn imagination into reality.
         </p>
 
-        {/* <SearchForm query={query} /> */}
+        <SearchForm />
       </section>
 
     </>
