@@ -4,3 +4,13 @@ import { twMerge } from "tailwind-merge"
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+export const getFallbackAvatar = (name: string): null|string => {
+  if(!name) return null; 
+
+  const split = name.split(" ");
+  const size = split.length;
+
+  if(size == 1) return split[0]?.toUpperCase()[0];
+  else return split[0]?.toUpperCase()[0] + split[size-1]?.toUpperCase()[0];
+}

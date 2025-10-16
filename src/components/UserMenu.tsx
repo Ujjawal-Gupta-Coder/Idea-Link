@@ -12,21 +12,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {Session} from "@/types/session";
 import Link from "next/link";
 import SignOut from "./SignOut";
+import { getFallbackAvatar } from "@/lib/utils";
 
 
 export default function UserMenu({session}: {session: Session}) {
-    const getFallbackAvatar = (name: string): null|string => {
-        if(!name) return null; 
-  
-        const split = name.split(" ");
-  
-      const size = split.length;
-  
-      if(size == 1) return split[0]?.toUpperCase()[0];
-      else return split[0]?.toUpperCase()[0] + split[size-1]?.toUpperCase()[0];
-        
-    }
-
+    
   return (
     <DropdownMenu >
           <DropdownMenuTrigger asChild>

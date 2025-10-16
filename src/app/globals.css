@@ -28,6 +28,9 @@
   --color-primary: var(--primary);
   --color-primary-100: var(--primary-100);
 
+  --color-accent: var(--accent);
+  --color-neutral: var(--neutral);
+
   --color-secondary: var(--secondary);
 
   --color-black: var(--black);
@@ -43,10 +46,13 @@
 }
 
 :root {
-  --primary: #EE2B69;
-  --primary-100: #FFE8F0;
+  --primary: #41A67E;
+  --primary-100: #92eec9;
 
-  --secondary: #FBE843;
+  --secondary: #05339C;
+
+  --accent: #1055C9;
+  --neutral: #E5C95F;
 
   --black: #000000;
   --black-100: #333333;
@@ -61,10 +67,13 @@
 }
 
 .dark {
-  --primary: #F06292;      
-  --primary-100: #3a0a18;  
+  --primary:  #41A67E;      
+  --primary-100: #0d4b32;  
 
-  --secondary: #FFD84A;    
+  --secondary: #05339C;    
+
+  --accent: #1055C9;
+  --neutral: #E5C95F;
 
   --black: #FFFFFF;
   --black-100: #EAEAEA;
@@ -160,6 +169,9 @@
     @apply uppercase bg-black px-6 py-3 font-work-sans font-extrabold text-white sm:text-[54px] sm:leading-[64px] text-[36px] leading-[46px] max-w-5xl text-center my-5;
   }
 
+  .heading-gradient-text {
+    @apply text-transparent px-3 text-[50px] sm:text-[65px] relative sm:right-4 bg-clip-text bg-gradient-to-r from-neutral via-primary to-accent font-cursive
+  }
   .sub-heading {
     @apply font-medium text-[20px] text-white max-w-2xl text-center break-words;
   }

@@ -7,20 +7,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
+import { getFallbackAvatar } from "@/lib/utils"
 
 export default async function Navbar () {
   const session  = await auth();
-  const getFallbackAvatar = (name: string): null|string => {
-      if(!name) return null; 
-
-      const split = name.split(" ");
-      const size = split.length;
-  
-      if(size == 1) return split[0]?.toUpperCase()[0];
-      else return split[0]?.toUpperCase()[0] + split[size-1]?.toUpperCase()[0];
-    }
-  
   return (
     <header className="px-5 py-3 bg-white shadow-sm font-work-sans">
       <nav className="flex justify-between items-center">
