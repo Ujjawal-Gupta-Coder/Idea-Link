@@ -16,12 +16,7 @@
   /* Border Radius */
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
-
-  /* Shadows */
-  --shadow-100: 2px 2px 0px 0px rgb(0, 0, 0);
-  --shadow-200: 2px 2px 0px 2px rgb(0, 0, 0);
-  --shadow-300: 2px 2px 0px 2px rgb(238, 43, 105);
+  --radius-sm: calc(var(--radius) - 4px); 
 }
 
 @theme inline {
@@ -43,11 +38,16 @@
 
   --color-border: var(--border);
   --color-ring: var(--ring);
+
+  /* Shadows */
+  --shadow-100: var(--shadow-100);
+  --shadow-200: var(--shadow-200);
+  --shadow-300: var(--shadow-300);
 }
 
 :root {
   --primary: #41A67E;
-  --primary-100: #92eec9;
+  --primary-100: #d1f0e4;
 
   --secondary: #05339C;
 
@@ -64,11 +64,16 @@
 
   --border: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
+
+  /* Shadows */
+  --shadow-100: 2px 2px 0px 0px rgb(0, 0, 0);
+  --shadow-200: 2px 2px 0px 2px rgb(0, 0, 0);
+  --shadow-300: 2px 2px 0px 2px #41A67E;
 }
 
 .dark {
   --primary:  #41A67E;      
-  --primary-100: #0d4b32;  
+  --primary-100: #072c1d;  
 
   --secondary: #05339C;    
 
@@ -85,6 +90,11 @@
 
   --border: oklch(1 0 0 / 10%);
   --ring: oklch(0.556 0 0);
+
+  /* Shadows */
+  --shadow-100: 2px 2px 0px 0px rgb(255, 255, 255);
+  --shadow-200: 2px 2px 0px 2px rgb(255, 255, 255);
+  --shadow-300: 2px 2px 0px 2px #41A67E;
 }
 
 @layer base {
