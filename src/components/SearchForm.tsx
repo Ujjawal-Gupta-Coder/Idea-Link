@@ -12,7 +12,7 @@ const SearchForm = () => {
     const delay = setTimeout(() => {
         const trimed = query.trim();
         if(trimed.length === 0) route.replace("/");
-        else route.replace(`/?query=${encodeURIComponent(trimed).replace(/%20/g, "+")}`)
+        else route.replace(`/?query=${encodeURIComponent(trimed).replace(/%20/g, "+")}`, { scroll: false })
     }, 400)
     
     return () => clearTimeout(delay);
