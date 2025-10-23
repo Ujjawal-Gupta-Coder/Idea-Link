@@ -1,30 +1,13 @@
 import SearchForm from "@/components/SearchForm"
 import StartupCard from "@/components/StartupCard";
-import {StartupCardType} from "@/types/StartupCard";
+import { client } from "@/sanity/lib/client";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
+import {StartupCardType} from "@/types";
 
 const page = async ( {searchParams} : {searchParams?: {query?: string}}) => {
   const query = searchParams?.query || "";
+  const posts:StartupCardType[] = await client.fetch(STARTUPS_QUERY);
 
-  const posts: StartupCardType[] = [];
-
-  // 💥 Fake data entry
-  for(let i=0; i<50; i++) {
-    const post:StartupCardType = {
-    _createdAt:new Date(),
-    views: 56,
-    author:  {
-        name: "Elon Musk",
-        _id: "abcxyz123.com",
-        image: "/elon.webp"
-    },
-    title: "Grok AI",
-    category: "Tech",
-    _id: "123abcX.com",
-    image: "/grok.jpeg",
-    description: "This startup is all about AI and its impact.",
-  }
-    posts.push(post);
-  }
   return (
     <>
     <section className="hero_container">
@@ -47,9 +30,8 @@ const page = async ( {searchParams} : {searchParams?: {query?: string}}) => {
 
         <ul className="mt-7 card_grid">
           {posts?.length > 0 ? (
-            posts.map((post: StartupCardType, idx: number) => (
-              // <StartupCard key={post?._id} post={post} />
-              <StartupCard key={idx} post={post} />
+            posts.map((post: StartupCardType) => (
+              <StartupCard key={post?._id} post={post} />
             ))
           ) : (
             <p className="no-result">No startups found</p>

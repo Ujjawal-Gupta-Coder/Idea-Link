@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { User, LogOut, PenLine } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {Session} from "@/types/Session";
+import {Session} from "@/types";
 import Link from "next/link";
 import SignOut from "./SignOut";
 import { getFallbackAvatar } from "@/lib/utils";

@@ -15,7 +15,7 @@ export const getFallbackAvatar = (name: string): null|string => {
   else return split[0]?.toUpperCase()[0] + split[size-1]?.toUpperCase()[0];
 }
 
-export function formatDate(date: Date) {
+export function formatDate(date: string) {
   return new Date(date).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",

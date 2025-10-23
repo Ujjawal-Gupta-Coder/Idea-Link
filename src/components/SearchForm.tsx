@@ -1,12 +1,19 @@
 "use client"
 import { Search, X } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 const SearchForm = () => {
-  const searchQuery = useSearchParams().get("query");
-  const [query, setQuery] = useState(searchQuery ? searchQuery.trim() : "");
+  const searchParams = useSearchParams();
+  const typingRef = useRef(false);
+  const [query, setQuery] = useState(searchParams.get("query") || "");
   const route = useRouter();
+
+  useEffect(() => {
+    if(typingRef.current) return;
+    const currentQuery = searchParams.get("query") || "";
+    setQuery(currentQuery);
+  }, [searchParams]); 
 
   useEffect(() => {
     const delay = setTimeout(() => {
@@ -20,7 +27,8 @@ const SearchForm = () => {
 
   return (
     <div className="search-form flex gap-2">
-      <input name="query" className="search-input" placeholder="Search Startups" value={query} onChange={(e) => setQuery(e.target.value)} />
+      <input name="query" className="search-input"  placeholder="Search Startups" value={query} onChange={(e) => setQuery(e.target.value)} onFocus={() => (typingRef.current = true)}
+        onBlur={() => (typingRef.current = false)}/>
 
       {
         query && 

@@ -1,4 +1,4 @@
-import {StartupCardType} from "@/types/StartupCard";
+import {StartupCardType} from "@/types";
 import { EyeIcon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -39,7 +39,7 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
         <Link href={`/user/${author?._id}`}>
           <Image
             src={author.image}
-            alt={author.name || "User Picture"}
+            alt={author?.name || "User Picture"}
             width={48}
             height={48}
             className="rounded-full"
