@@ -3,6 +3,7 @@ import localFont from 'next/font/local'
 import { ThemeProvider } from "@/components/theme-provider"
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { SanityLive } from "@/sanity/lib/live";
 
 const workSans = localFont({
   src: [
@@ -87,6 +88,7 @@ export default function RootLayout({
           >
             <Navbar />
             {children}
+            <SanityLive />
           </ThemeProvider>
       </body>
 
