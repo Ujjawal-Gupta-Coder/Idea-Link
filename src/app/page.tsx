@@ -1,13 +1,14 @@
+export const revalidate = 0;
+
 import SearchForm from "@/components/SearchForm"
 import StartupCard from "@/components/StartupCard";
-import { client } from "@/sanity/lib/client";
+import { sanityFetch } from "@/sanity/lib/live";
 import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import {StartupCardType} from "@/types";
 
 const page = async ( {searchParams} : {searchParams?: {query?: string}}) => {
   const query = searchParams?.query || "";
-  const posts:StartupCardType[] = await client.fetch(STARTUPS_QUERY);
-
+  const {data: posts} = await sanityFetch({query: STARTUPS_QUERY});
   return (
     <>
     <section className="hero_container">
