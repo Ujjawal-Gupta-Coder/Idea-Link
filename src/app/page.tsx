@@ -7,8 +7,8 @@ import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import {StartupCardType} from "@/types";
 
 const page = async ( {searchParams} : {searchParams?: {query?: string}}) => {
-  const query = searchParams?.query || "";
-  const {data: posts} = await sanityFetch({query: STARTUPS_QUERY});
+  const query = searchParams?.query || null;
+  const {data: posts} = await sanityFetch({query: STARTUPS_QUERY, params: {query}});
   return (
     <>
     <section className="hero_container">
