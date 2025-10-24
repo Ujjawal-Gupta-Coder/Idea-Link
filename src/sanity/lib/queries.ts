@@ -22,21 +22,20 @@ export const STARTUPS_QUERY =
   image,
 }`);
 
-export const STARTUP_BY_ID_QUERY =
-  defineQuery(`*[_type == "startup" && _id == $id][0]{
-  _id, 
-  title, 
-  slug,
+export const STARTUP_BY_ID_QUERY = defineQuery(`*[_type == "startup" && _id == $id][0]{
   _createdAt,
+  _id,
   author -> {
-    _id, name, username, image, bio
-  }, 
-  views,
-  description,
+    name, image, bio, username, _id
+  },
   category,
+  description,
   image,
   pitch,
-}`);
+  slug,
+  title,
+  views
+} `) 
 
 export const STARTUP_VIEWS_QUERY = defineQuery(`
     *[_type == "startup" && _id == $id][0]{
