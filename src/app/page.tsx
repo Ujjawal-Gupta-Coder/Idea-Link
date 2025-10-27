@@ -12,6 +12,7 @@ const page = async ( {searchParams} : {searchParams?: {query?: string}}) => {
   return (
     <>
     <section className="hero_container">
+      <p className="tag">Pitch, vote and grow</p>
         <h1 className="heading">
           Every Great Startup <br/>
           Starts With an <span className="heading-gradient-text">Idea</span> 
