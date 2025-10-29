@@ -5,11 +5,13 @@ import { STARTUP_BY_ID_QUERY } from '@/sanity/lib/queries';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import React from 'react'
+import React, { Suspense } from 'react'
 import markdownit from "markdown-it";
+import View from '@/components/View';
+import { Skeleton } from '@/components/ui/skeleton';
 
-const page = async ({params}: {params: {id: string}}) => {
-    const id = params.id;
+const page = async ({params}: {params: Promise<{id: string}>}) => {
+    const { id } = await params;
     const post = await client.fetch(STARTUP_BY_ID_QUERY, {id});
     const md = markdownit();
     const markdown = md.render(post?.pitch || "");
@@ -55,7 +57,7 @@ const page = async ({params}: {params: {id: string}}) => {
 
           {markdown ? (
             <article
-              className="prose dark:prose-invert max-w-4xl font-work-sans break-all"
+              className="prose dark:prose-invert max-w-4xl font-work-sans"
               dangerouslySetInnerHTML={{ __html: markdown }}
             /> 
           ) : (
@@ -64,6 +66,12 @@ const page = async ({params}: {params: {id: string}}) => {
         </div>
         
        <hr className="divider" />
+
+        {/*💥 TODO: EDITORS RECOMMENDATIONS */}
+
+          <Suspense fallback={<Skeleton className='view_skeleton' />}>
+              <View id={id} />
+          </Suspense>
 
       </section>
     </>
