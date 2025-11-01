@@ -27,7 +27,7 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
       <section className="section_container">
         <div className='relative w-full aspect-[16/9] object-cover'>
             <Image
-              src={post.image}
+              src={post.image || "/no-image-placeholder.png"}
               alt="thumbnail"
               className='rounded-xl'
               fill
