@@ -47,7 +47,7 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
         <p className="startup-card_desc">{description}</p>
 
         <div className='relative startup-card_img'>
-            <Image src={image} alt="placeholder" fill />
+            <Image src={image || "/no-image-placeholder.png"} alt="Pitch Image" fill />
         </div>
       </Link>
 
