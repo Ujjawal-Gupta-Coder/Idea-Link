@@ -1,7 +1,7 @@
 import { defineQuery } from "next-sanity";
 
 export const STARTUPS_QUERY =
-  defineQuery(`*[_type == "startup" && defined(slug.current) && 
+  defineQuery(`*[_type == "startup" && 
     (
       !defined($query) ||
       lower(title) match "*" + lower($query) + "*" ||
@@ -11,7 +11,6 @@ export const STARTUPS_QUERY =
   ] | order(_createdAt desc) {
   _id, 
   title, 
-  slug,
   _createdAt,
   author -> {
     _id, name, image, bio
@@ -44,15 +43,9 @@ export const STARTUP_VIEWS_BY_ID_QUERY = defineQuery(`
 `);
 
 
-export const AUTHOR_BY_GITHUB_ID_QUERY = defineQuery(`
-*[_type == "author" && id == $id][0]{
-    _id,
-    id,
-    name,
-    username,
-    email,
-    image,
-    bio
+export const AUTHOR_BY_EMAIL_QUERY = defineQuery(`
+*[_type == "author" && email == $email][0] {
+  _id
 }
 `);
 

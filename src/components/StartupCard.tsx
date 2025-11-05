@@ -3,7 +3,7 @@ import { EyeIcon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from './ui/button';
-import { formatDate } from '@/lib/utils';
+import { formatDate, getImageLink } from '@/lib/utils';
 import ProfileAvatar from "./ProfileAvatar";
 
 const StartupCard = ({ post }: { post: StartupCardType }) => {
@@ -47,7 +47,7 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
         <p className="startup-card_desc">{description}</p>
 
         <div className='relative startup-card_img'>
-            <Image src={image || "/no-image-placeholder.png"} alt="Pitch Image" fill />
+            <Image src={image ? getImageLink(image).url() : "/no-image-placeholder.png"} alt="Pitch Image" fill />
         </div>
       </Link>
 

@@ -1,5 +1,10 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import imageUrlBuilder from '@sanity/image-url'
+import { client } from "@/sanity/lib/client"
+import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
+
+const builder = imageUrlBuilder(client);
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -21,4 +26,8 @@ export function formatDate(date: string) {
     day: "numeric",
     year: "numeric",
   });
+}
+
+export function getImageLink(source: SanityImageSource) {
+    return builder.image(source);
 }
