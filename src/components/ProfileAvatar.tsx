@@ -9,7 +9,7 @@ const ProfileAvatar = ({image, name}:{image:string|undefined, name:string|undefi
         
         <div className='relative w-full h-full rounded-full overflow-hidden drop-shadow-lg'>
             <Image
-                src={image}
+                src={image ? image : "/user-placeholder.png"}
                 alt={name || "User Picture"}
                 fill
                 className="object-cover"

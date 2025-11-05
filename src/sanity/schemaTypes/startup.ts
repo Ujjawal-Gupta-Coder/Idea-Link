@@ -7,41 +7,55 @@ export const startup = defineType({
   fields: [
     defineField({
       name: "title",
+      title: "Title",
       type: "string",
-    }),
-    defineField({
-      name: "slug",
-      type: "slug",
-      options: {
-        source: "title",
-      },
+       validation: (Rule) =>
+        Rule.required().error("Title is required")
+        .min(3).error("Title must be at least 3 characters")
+        .max(50).error("Title must be less than 50 characters"),
     }),
     defineField({
       name: "author",
+      title: "Author",
       type: "reference",
       to: { type: "author" },
+       validation: (Rule) =>
+        Rule.required().error("author is required"),
     }),
     defineField({
       name: "views",
+      title: "Views",
       type: "number",
+      initialValue: 0,
     }),
     defineField({
       name: "description",
+      title: "Description",
       type: "text",
+       validation: (Rule) =>
+        Rule.required().error("Description is required")
+        .min(3).error("Description must be at least 3 characters")
     }),
     defineField({
       name: "category",
+      title: "Category",
       type: "string",
       validation: (Rule) =>
-        Rule.min(1).max(20).required().error("Please enter a category"),
+      Rule.required().error("Category is required")
+      .min(3).error("Category must be at least 3 characters")
+      .max(20).error("Category must be less than 20 characters"),
     }),
     defineField({
       name: "image",
-      type: "url",
-      validation: (Rule) => Rule.required(),
+      title: "Cover Image",
+      type: "image",
+      options: {
+        hotspot: true,
+      }
     }),
     defineField({
       name: "pitch",
+      title: "Pitch",
       type: "markdown",
     }),
   ],

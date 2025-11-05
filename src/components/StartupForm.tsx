@@ -9,6 +9,9 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Spinner } from "@/components/ui/spinner"
 import Image from "next/image";
+import { redirect } from "next/navigation";
+import { toast } from 'react-toastify';
+import { useTheme } from "next-themes";
 
 type StartupForm = {
   title: string,
@@ -18,6 +21,7 @@ type StartupForm = {
 
 
 export default function StartupForm() {
+    const { theme } = useTheme();
     const [pitch, setPitch] = useState("");
     const [image, setImage] = useState<File|null> (null);
    const {
@@ -32,11 +36,26 @@ export default function StartupForm() {
     },
   });
 
-  const onSubmit: SubmitHandler<StartupForm> = (data) => {
 
-    console.log("data ",data)
-    console.log("image: ",image)
-    console.log("pitch: ",pitch)
+  const onSubmit: SubmitHandler<StartupForm> = async (data) => {
+
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("category", data.category);
+    if(image) formData.append("image", image);
+    formData.append("pitch", pitch);
+
+    const raw = await fetch("/api/create-startup", {
+      method: "POST",
+      body: formData
+    })
+    const response = await raw.json(); 
+    if(response.success) {
+      toast.success(response.message, { theme });
+      redirect(`/startup/${response.data._id}`);
+    }
+    else toast.error(response.message, { theme });
   } 
 
 const handleDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -69,7 +88,9 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 message: "Title is required",
               },
               validate: (value) => {
-                if(value.trim().length < 3) return "At least 3 non-space characters"
+                const length = value.trim().length;
+                if(length < 3) return "At least 3 non-space characters"
+                else if(length > 50) return "At most 50 non-space characters"
                 else return true;
               }
           })}
@@ -113,7 +134,9 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 message: "Category is required",
               },
               validate: (value) => {
-                if(value.trim().length < 3) return "At least 3 non-space characters"
+                const length = value.trim().length;
+                if(length < 3) return "At least 3 non-space characters"
+                else if(length > 20) return "At most 20 non-space characters"
                 else return true;
               }
           })}

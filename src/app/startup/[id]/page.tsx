@@ -1,5 +1,5 @@
 import ProfileAvatar from '@/components/ProfileAvatar';
-import { formatDate } from '@/lib/utils';
+import { formatDate, getImageLink } from '@/lib/utils';
 import { client } from '@/sanity/lib/client';
 import { STARTUP_BY_ID_QUERY } from '@/sanity/lib/queries';
 import Image from 'next/image';
@@ -27,7 +27,7 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
       <section className="section_container">
         <div className='relative w-full aspect-[16/9] object-cover'>
             <Image
-              src={post.image || "/no-image-placeholder.png"}
+              src={post.image ? getImageLink(post.image).url() : "/no-image-placeholder.png"}
               alt="thumbnail"
               className='rounded-xl'
               fill

@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { SanityLive } from "@/sanity/lib/live";
+import { ToastContainer } from "react-toastify";
 
 const workSans = localFont({
   src: [
@@ -88,6 +89,7 @@ export default function RootLayout({
           >
             <Navbar />
             {children}
+            <ToastContainer />
             <SanityLive />
           </ThemeProvider>
       </body>
