@@ -53,7 +53,7 @@ export default function StartupForm() {
     const response = await raw.json(); 
     if(response.success) {
       toast.success(response.message, { theme });
-      redirect(`/startup/${response.data._id}`);
+      redirect(`/startup/${response.data.slug}`);
     }
     else toast.error(response.message, { theme });
   } 

@@ -16,6 +16,7 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
     _id,
     image,
     description,
+    slug
   } = post;
 
   return (
@@ -33,7 +34,7 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
           <Link href={`/user/${author?.username}`}>
             <p className="text-16-medium line-clamp-1">{author?.name}</p>
           </Link>
-          <Link href={`/startup/${_id}`}>
+          <Link href={`/startup/${slug}`}>
             <h3 className="text-26-semibold line-clamp-1">{title}</h3>
           </Link>
         </div>
@@ -43,7 +44,7 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
         </Link>
       </div>
 
-      <Link href={`/startup/${_id}`}>
+      <Link href={`/startup/${slug}`}>
         <p className="startup-card_desc">{description}</p>
 
         <div className='relative startup-card_img'>
@@ -56,7 +57,7 @@ const StartupCard = ({ post }: { post: StartupCardType }) => {
           <p className="text-16-medium">{category}</p>
         </Link>
         <Button className="startup-card_btn">
-          <Link href={`/startup/${_id}`}>Details</Link>
+          <Link href={`/startup/${slug}`}>Details</Link>
         </Button>
       </div>
     </li>

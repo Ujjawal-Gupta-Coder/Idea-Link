@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
+import { generateUniqueSlug } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
-import { AUTHOR_BY_EMAIL_QUERY } from "@/sanity/lib/queries";
+import { AUTHOR_BY_EMAIL_QUERY, STARTUP_BY_SLUG_QUERY } from "@/sanity/lib/queries";
 import { writeClient } from "@/sanity/lib/write-client";
 
 type SimpleFormData = {
@@ -85,10 +86,30 @@ export async function POST(req:Request) {
         imageAsset = await writeClient.assets.upload("image", buffer, { filename: image.name });
       }
 
+      // genearate Slug
+      let slug;
+      let attempt = 5;
+      let found = false;
+      while(attempt > 0) {
+        slug = generateUniqueSlug(simpleData.title!, {type: "startup"});
+        const alreadyTaken = await client.fetch(STARTUP_BY_SLUG_QUERY, {slug});
+        if(!alreadyTaken) {
+          found = true;
+          break;
+        }
+        attempt--;
+      }
+      
+      if(!found) {
+        slug = generateUniqueSlug(simpleData.title!, {hard: true, type: "startup"});
+      }
 
+
+      // Finally create the startup
       const result = await writeClient.create({...simpleData,
         _type: "startup",
         views: 0,
+        slug,
         author: {
           _type: "reference",
           _ref: authorId,

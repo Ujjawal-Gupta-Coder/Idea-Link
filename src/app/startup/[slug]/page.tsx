@@ -1,7 +1,7 @@
 import ProfileAvatar from '@/components/ProfileAvatar';
 import { formatDate, getImageLink } from '@/lib/utils';
 import { client } from '@/sanity/lib/client';
-import { STARTUP_BY_ID_QUERY } from '@/sanity/lib/queries';
+import { STARTUP_BY_SLUG_QUERY } from '@/sanity/lib/queries';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -10,9 +10,9 @@ import markdownit from "markdown-it";
 import View from '@/components/View';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const page = async ({params}: {params: Promise<{id: string}>}) => {
-    const { id } = await params;
-    const post = await client.fetch(STARTUP_BY_ID_QUERY, {id});
+const page = async ({params}: {params: Promise<{slug: string}>}) => {
+    const { slug } = await params;
+    const post = await client.fetch(STARTUP_BY_SLUG_QUERY, {slug});
     const md = markdownit();
     const markdown = md.render(post?.pitch || "");
     if(!post) return notFound();
@@ -70,7 +70,7 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
         {/*💥 TODO: EDITORS RECOMMENDATIONS */}
 
           <Suspense fallback={<Skeleton className='view_skeleton' />}>
-              <View id={id} />
+              <View id={post._id} />
           </Suspense>
 
       </section>
