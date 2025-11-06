@@ -11,6 +11,7 @@ export const STARTUPS_QUERY =
   ] | order(_createdAt desc) {
   _id, 
   title, 
+  slug,
   _createdAt,
   author -> {
     name, image, username
@@ -21,7 +22,7 @@ export const STARTUPS_QUERY =
   image,
 }`);
 
-export const STARTUP_BY_ID_QUERY = defineQuery(`*[_type == "startup" && _id == $id][0]{
+export const STARTUP_BY_SLUG_QUERY = defineQuery(`*[_type == "startup" && slug == $slug][0]{
   _createdAt,
   _id,
   author -> {
@@ -41,7 +42,6 @@ export const STARTUP_VIEWS_BY_ID_QUERY = defineQuery(`
     _id, views
   }
 `);
-
 
 export const AUTHOR_BY_EMAIL_QUERY = defineQuery(`
 *[_type == "author" && email == $email][0] {

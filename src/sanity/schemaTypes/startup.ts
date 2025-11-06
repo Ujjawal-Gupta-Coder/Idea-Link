@@ -20,7 +20,14 @@ export const startup = defineType({
       type: "reference",
       to: { type: "author" },
        validation: (Rule) =>
-        Rule.required().error("author is required"),
+        Rule.required().error("Author is required"),
+    }),
+    defineField({
+      name: "slug",
+      title: "Slug",
+      type: "string",
+      validation: (Rule) =>
+        Rule.required().error("Slug is required"),
     }),
     defineField({
       name: "views",

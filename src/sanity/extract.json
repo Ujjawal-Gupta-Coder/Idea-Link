@@ -167,6 +167,13 @@
         },
         "optional": true
       },
+      "slug": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "views": {
         "type": "objectAttribute",
         "value": {
