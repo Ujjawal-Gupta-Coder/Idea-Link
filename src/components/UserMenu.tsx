@@ -9,21 +9,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { User, LogOut, PenLine } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {Session} from "@/types";
 import Link from "next/link";
 import SignOut from "./SignOut";
-import { getFallbackAvatar } from "@/lib/utils";
+import { getFallbackAvatar, getImageLink } from "@/lib/utils";
+import { Author } from "@/sanity/types";
 
 
-export default function UserMenu({session}: {session: Session}) {
+export default function UserMenu({user}: {user: Author}) {
     
   return (
     <DropdownMenu >
           <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="rounded-full p-0 w-10 h-10 hover:ring-2 hover:ring-secondary">
-          <Avatar className="size-10 cursor-pointer">
-              <AvatarImage src={session.user?.image || ""} alt={session.user?.name || ""} />
-              <AvatarFallback> {getFallbackAvatar(session.user?.name || "") || "AA"} </AvatarFallback>
+          <Avatar className="size-10 cursor-pointer border-2 border-accent">
+              <AvatarImage  src={user.image ? getImageLink(user.image).url() : null} alt={user?.name || ""} />
+              <AvatarFallback> {getFallbackAvatar(user?.name || "") || "AA"} </AvatarFallback>
             </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -34,7 +34,7 @@ export default function UserMenu({session}: {session: Session}) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem className="hover:bg-primary-100 rounded-xl">
-          <User className="mr-2 h-4 w-4" /> <Link href={"/user-profile"} >Profile</Link>
+          <User className="mr-2 h-4 w-4" /> <Link href={`/user-profile/${user.username}`} >Profile</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem className="hover:bg-primary-100 rounded-xl">

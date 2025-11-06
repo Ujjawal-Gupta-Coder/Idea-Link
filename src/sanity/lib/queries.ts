@@ -13,7 +13,7 @@ export const STARTUPS_QUERY =
   title, 
   _createdAt,
   author -> {
-    _id, name, image, bio
+    name, image, username
   }, 
   views,
   description,
@@ -49,13 +49,19 @@ export const AUTHOR_BY_EMAIL_QUERY = defineQuery(`
 }
 `);
 
-export const AUTHOR_BY_ID_QUERY = defineQuery(`
-*[_type == "author" && _id == $id][0]{
+export const AUTHOR_BY_USERNAME_QUERY = defineQuery(`
+*[_type == "author" && username == $username][0] {
+  _id
+}
+`);
+
+
+export const AUTHOR_BY_EMAIL_LONG_QUERY = defineQuery(`
+*[_type == "author" && email == $email][0]{
     _id,
-    id,
     name,
-    username,
     email,
+    username,
     image,
     bio
 }
