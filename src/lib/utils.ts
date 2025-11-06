@@ -31,3 +31,20 @@ export function formatDate(date: string) {
 export function getImageLink(source: SanityImageSource) {
     return builder.image(source);
 }
+
+
+export function generateUniqueSlug(name:string, option?:{hard?: boolean, type?: string}) {
+  if (!name) return "";
+
+  name = name
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  const digit = option?.hard ? 6: 3;
+
+  const code = String(Math.floor(Math.random() * (10**digit))).padStart(digit, "0");
+
+  return `${name}${option?.type === "startup" ? "~" : "-"}${code}`;
+}

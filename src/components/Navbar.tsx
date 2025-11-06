@@ -7,10 +7,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getFallbackAvatar } from "@/lib/utils"
+import { getFallbackAvatar, getImageLink } from "@/lib/utils"
+import { client } from "@/sanity/lib/client";
+import { AUTHOR_BY_EMAIL_LONG_QUERY } from "@/sanity/lib/queries";
 
 export default async function Navbar () {
   const session  = await auth();
+  let user = null;
+  if(session?.user) {
+      user = await client.fetch(AUTHOR_BY_EMAIL_LONG_QUERY, {email : session.user.email});
+  }
+
   return (
     <header className="px-5 py-3 bg-white shadow-sm font-work-sans">
       <nav className="flex justify-between items-center">
@@ -22,10 +29,10 @@ export default async function Navbar () {
         <div className="flex items-center justify-center gap-5 text-black">
           <Toggle />
           {
-            session && session.user ? 
+            user ? 
             <>
             <div className="block md:hidden">
-              <UserMenu session={session}/>
+              <UserMenu user={user}/>
             </div>
 
 
@@ -41,15 +48,15 @@ export default async function Navbar () {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link href={'/user-profile'}>
-                  <Avatar className="size-10" >
-                    <AvatarImage src={session.user?.image || ""} alt={session.user?.name || ""} />
-                    <AvatarFallback> {getFallbackAvatar(session.user?.name || "") || "AA"} </AvatarFallback>
+                <Link href={`/user-profile/${user.username}`}>
+                  <Avatar className="size-10 border-2 border-accent">
+                    <AvatarImage src={user.image ? getImageLink(user.image).url() : null} alt={user?.name || ""} />
+                    <AvatarFallback> {getFallbackAvatar(user?.name || "") || "AA"} </AvatarFallback>
                   </Avatar>
                 </Link>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="font-semibold">User Profile</p>
+                <p className="font-semibold">{user.name ? user.name+"'s" : "User"} Profile</p>
               </TooltipContent>
             </Tooltip>
              

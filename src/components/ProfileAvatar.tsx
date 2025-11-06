@@ -1,7 +1,8 @@
+import { getImageLink } from '@/lib/utils'
 import Image from 'next/image'
 import React from 'react'
 
-const ProfileAvatar = ({image, name}:{image:string|undefined, name:string|undefined}) => {
+const ProfileAvatar = ({image, name}:{image:any, name:string|undefined}) => {
   return (
     
     <div className="h-16 w-16 relative flex justify-center items-center p-[3px]">
@@ -9,7 +10,7 @@ const ProfileAvatar = ({image, name}:{image:string|undefined, name:string|undefi
         
         <div className='relative w-full h-full rounded-full overflow-hidden drop-shadow-lg'>
             <Image
-                src={image ? image : "/user-placeholder.png"}
+                src={image ? getImageLink(image).url() : "/user-placeholder.png"}
                 alt={name || "User Picture"}
                 fill
                 className="object-cover"
