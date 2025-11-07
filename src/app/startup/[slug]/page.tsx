@@ -67,8 +67,6 @@ const page = async ({params}: {params: Promise<{slug: string}>}) => {
         
        <hr className="divider" />
 
-        {/*💥 TODO: EDITORS RECOMMENDATIONS */}
-
           <Suspense fallback={<Skeleton className='view_skeleton' />}>
               <View id={post._id} />
           </Suspense>

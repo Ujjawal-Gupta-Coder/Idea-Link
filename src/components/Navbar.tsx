@@ -9,17 +9,17 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getFallbackAvatar, getImageLink } from "@/lib/utils"
 import { client } from "@/sanity/lib/client";
-import { AUTHOR_BY_EMAIL_LONG_QUERY } from "@/sanity/lib/queries";
+import { AUTHOR_BY_EMAIL_QUERY } from "@/sanity/lib/queries";
 
 export default async function Navbar () {
   const session  = await auth();
   let user = null;
   if(session?.user) {
-      user = await client.fetch(AUTHOR_BY_EMAIL_LONG_QUERY, {email : session.user.email});
+      user = await client.fetch(AUTHOR_BY_EMAIL_QUERY, {email : session.user.email});
   }
 
   return (
-    <header className="px-5 py-3 bg-white shadow-sm font-work-sans">
+    <header className="px-5 py-3 bg-white-100 h-[72px] shadow-sm font-work-sans">
       <nav className="flex justify-between items-center">
         <Link href={"/"}>
           <Image src={"/logo-light.png"} alt="Logo" height={20} width={100} className="block dark:hidden" />
@@ -48,7 +48,7 @@ export default async function Navbar () {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link href={`/user-profile/${user.username}`}>
+                <Link href={`/user/${user.username}`}>
                   <Avatar className="size-10 border-2 border-accent">
                     <AvatarImage src={user.image ? getImageLink(user.image).url() : null} alt={user?.name || ""} />
                     <AvatarFallback> {getFallbackAvatar(user?.name || "") || "AA"} </AvatarFallback>

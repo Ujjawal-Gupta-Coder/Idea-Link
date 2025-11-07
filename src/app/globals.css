@@ -205,6 +205,8 @@
   /* profile */
   .profile_container {
     @apply w-full pb-10 pt-20 px-6 max-w-7xl mx-auto lg:flex-row flex-col flex gap-10;
+    min-height: calc(100vh - 72px - 35px);
+
   }
 
   .profile_card {
@@ -216,16 +218,16 @@
   }
 
   .profile_image {
-    @apply rounded-full object-cover border-[3px] border-black;
+    @apply rounded-full overflow-hidden object-cover border-[3px] border-black drop-shadow-lg;
   }
 
   /* idea details */
-  .divider {
+  .divider {    
     @apply border-dotted bg-zinc-400 max-w-4xl my-10 mx-auto;
   }
 
   .view_skeleton {
-    @apply bg-zinc-400 h-10 w-24 rounded-lg fixed bottom-3 right-3;
+    @apply bg-zinc-400 h-10 w-24 rounded-lg fixed bottom-[40px] md:bottom-3 right-3;
   }
 
   /* navbar */
@@ -315,7 +317,7 @@
 
   /* view */
   .view-container {
-    @apply flex justify-end items-center mt-5 fixed bottom-3 right-3;
+    @apply flex justify-end items-center mt-5 fixed bottom-[40px] md:bottom-3 right-3;
   }
 
   .view-text {
@@ -323,13 +325,22 @@
   }
 
   .category-tag {
-    @apply font-medium text-[16px] bg-primary-100 px-4 py-2 rounded-full;
+    @apply font-medium text-[16px] bg-neutral/80 px-4 py-2 rounded-full;
   }
 
   .tag-tri {
     @apply before:content-[''] before:absolute before:top-2 before:left-2 before:border-t-[10px] before:border-t-black before:border-r-[10px] before:border-r-transparent after:content-[''] after:absolute after:bottom-2 after:right-2 after:border-b-[10px] after:border-b-black after:border-l-[10px] after:border-l-transparent;
   }
 }
+
+  /* footer  */
+  .footer-container {
+    @apply w-full h-[35px] bg-white-100 text-[9px] xs:text-[12px] md:text-[15px] lg:text-lg flex justify-center items-center;
+  }
+
+  .footer-link-text {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary font-bold hover:text-pink-400 font-cursive mx-1 md:mx-2;
+  }
 
   .w-md-editor-toolbar {
   padding: 10px  ;

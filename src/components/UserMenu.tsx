@@ -34,7 +34,7 @@ export default function UserMenu({user}: {user: Author}) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem className="hover:bg-primary-100 rounded-xl">
-          <User className="mr-2 h-4 w-4" /> <Link href={`/user-profile/${user.username}`} >Profile</Link>
+          <User className="mr-2 h-4 w-4" /> <Link href={`/user/${user.username}`} >Profile</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem className="hover:bg-primary-100 rounded-xl">
