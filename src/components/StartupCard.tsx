@@ -1,11 +1,11 @@
 import {StartupCardType} from "@/types";
-import { Edit, EllipsisVertical, EyeIcon, Trash2 } from 'lucide-react';
+import { EyeIcon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from './ui/button';
 import { formatDate, getImageLink } from '@/lib/utils';
 import ProfileAvatar from "./ProfileAvatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import StartupMenu from "./StartupMenu";
 
 const StartupCard = ({ post, showMenu = false }: { post: StartupCardType, showMenu?: boolean }) => {
   const {
@@ -16,7 +16,8 @@ const StartupCard = ({ post, showMenu = false }: { post: StartupCardType, showMe
     category,
     image,
     description,
-    slug
+    slug,
+    _id,
   } = post;
 
   return (
@@ -28,27 +29,8 @@ const StartupCard = ({ post, showMenu = false }: { post: StartupCardType, showMe
           <span className="text-16-medium">{views}</span>
 
           {
-            showMenu && 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <EllipsisVertical className="cursor-pointer" />
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent align="end" className="bg-white-100 text-black border-2 shadow-sm z-10 rounded-2xl p-2">
-                
-                <DropdownMenuItem className="flex items-center cursor-pointer hover:bg-neutral w-full px-4 py-2 rounded-2xl border-node">
-                  <Edit className="mr-2 h-4 w-4" /> 
-                  <Link href={`/startup/edit/${slug}`} >Edit</Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem className="flex items-center cursor-pointer hover:bg-red-500 w-full px-4 py-2 rounded-2xl">
-                  <Trash2 className="mr-2 h-4 w-4" /> 
-                  <button>Delete</button>
-                </DropdownMenuItem>
-              
-              </DropdownMenuContent>
-              
-            </DropdownMenu>
+            showMenu &&
+             <StartupMenu slug={slug} startup_id={_id} email={author?.email}/>
           }
 
         </div>
