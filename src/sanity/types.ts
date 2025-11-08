@@ -322,7 +322,7 @@ export type AUTHOR_BY_USERNAME_QUERYResult = {
   bio: string | null;
 } | null;
 // Variable: STARTUPS_BY_AUTHOR_QUERY
-// Query: *[_type == "startup" && author._ref == $id] | order(_createdAt desc) {  _id,   title,   slug,  _createdAt,  author -> {    _id, name, image, bio, username  },   views,  description,  category,  image,}
+// Query: *[_type == "startup" && author._ref == $id] | order(_createdAt desc) {  _id,   title,   slug,  _createdAt,  author -> {    _id, name, image, bio, username, email  },   views,  description,  category,  image,}
 export type STARTUPS_BY_AUTHOR_QUERYResult = Array<{
   _id: string;
   title: string | null;
@@ -345,6 +345,7 @@ export type STARTUPS_BY_AUTHOR_QUERYResult = Array<{
     } | null;
     bio: string | null;
     username: string | null;
+    email: string | null;
   } | null;
   views: number | null;
   description: string | null;
@@ -372,6 +373,6 @@ declare module "@sanity/client" {
     "\n  *[_type == \"startup\" && _id == $id][0]{\n    _id, views\n  }\n": STARTUP_VIEWS_BY_ID_QUERYResult;
     "\n*[_type == \"author\" && email == $email][0] {\n  _id,\n  name,\n  email,\n  username,\n  image,\n  bio\n}\n": AUTHOR_BY_EMAIL_QUERYResult;
     "\n*[_type == \"author\" && username == $username][0] {\n  _id,\n  name,\n  email,\n  username,\n  image,\n  bio\n}\n": AUTHOR_BY_USERNAME_QUERYResult;
-    "*[_type == \"startup\" && author._ref == $id] | order(_createdAt desc) {\n  _id, \n  title, \n  slug,\n  _createdAt,\n  author -> {\n    _id, name, image, bio, username\n  }, \n  views,\n  description,\n  category,\n  image,\n}": STARTUPS_BY_AUTHOR_QUERYResult;
+    "*[_type == \"startup\" && author._ref == $id] | order(_createdAt desc) {\n  _id, \n  title, \n  slug,\n  _createdAt,\n  author -> {\n    _id, name, image, bio, username, email\n  }, \n  views,\n  description,\n  category,\n  image,\n}": STARTUPS_BY_AUTHOR_QUERYResult;
   }
 }

@@ -73,7 +73,7 @@ export const STARTUPS_BY_AUTHOR_QUERY =
   slug,
   _createdAt,
   author -> {
-    _id, name, image, bio, username
+    _id, name, image, bio, username, email
   }, 
   views,
   description,
