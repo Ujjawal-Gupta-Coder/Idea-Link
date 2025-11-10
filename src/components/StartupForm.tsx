@@ -12,27 +12,49 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { toast } from 'react-toastify';
 import { useTheme } from "next-themes";
+import { getImageLink } from "@/lib/utils";
 
 type StartupForm = {
   title: string,
   description: string,
   category: string,
+  slug?: string
 };
 
+type InitialValueType = {
+  title: string|null,
+  description: string|null,
+  category: string|null,
+  image: {
+          asset?: {
+            _ref: string;
+            _type: "reference";
+          }
+        } | null
+  pitch: string|null,
+  slug: string|null,
+  id: string|null,
+  views: number|null
+}
 
-export default function StartupForm() {
+export default function StartupForm({isEditMode=false, initialValue=null}: {isEditMode?:boolean, initialValue?:InitialValueType|null}) {
+  
     const { theme } = useTheme();
-    const [pitch, setPitch] = useState("");
+    const [pitch, setPitch] = useState(initialValue?.pitch ? initialValue.pitch : "");
     const [image, setImage] = useState<File|null> (null);
+    const [existingImageUrl, setExistingImageUrl] = useState(isEditMode && initialValue?.image ? getImageLink(initialValue.image).url() : null);
+
+
    const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<StartupForm>({
     defaultValues: {
-        title: "",
-        description: "",
-        category: "",
+        title: initialValue?.title ? initialValue.title : "",
+        description: initialValue?.description ? initialValue.description : "",
+        category: initialValue?.category ? initialValue.category : "",
+        slug: initialValue?.slug ? initialValue.slug : "",
     },
   });
 
@@ -44,14 +66,29 @@ export default function StartupForm() {
     formData.append("description", data.description);
     formData.append("category", data.category);
     if(image) formData.append("image", image);
-    formData.append("pitch", pitch);
+    else if(!existingImageUrl && isEditMode) formData.append("image", "null");
 
-    const raw = await fetch("/api/create-startup", {
-      method: "POST",
-      body: formData
-    })
-    const response = await raw.json(); 
-    if(response.success) {
+    formData.append("pitch", pitch);
+    if(isEditMode && initialValue) {
+        formData.append("id", initialValue.id!);
+        formData.append("views", String(initialValue.views));
+        formData.append("slug", data.slug);
+    } 
+    let raw;
+    if(!isEditMode) {
+        raw = await fetch("/api/create-startup", {
+        method: "POST",
+        body: formData
+      })
+    } else {
+      raw = await fetch("/api/edit-startup", {
+        method: "PATCH",
+        body: formData
+      })
+    }
+    
+    const response = await raw?.json(); 
+    if(response?.success) {
       toast.success(response.message, { theme });
       redirect(`/startup/${response.data.slug}`);
     }
@@ -146,6 +183,41 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         {errors.category && <p className="startup-form_error">{errors.category.message}</p>}
       </div>  
 
+      {/* URL SLUG  */}
+      {
+        isEditMode && initialValue &&
+        <div className="flex flex-col">
+        <label className="startup-form_label">
+          URL Slug
+        </label>
+        <Input
+          {...register("slug", {
+              required: {
+                value: true,
+                message: "URL Slug is required",
+              },
+              validate: (value) => {
+                const trimmed = value!.trim();
+                const length = trimmed.length;
+                if(length < 3) return "At least 3 non-space characters"
+                if(length > 20) return "At most 20 non-space characters"
+
+                if(trimmed == "create" || trimmed == "edit") return "Keywords are not allowed"
+                
+                const regex = /^[a-z0-9_\-~]+$/;
+                if (!regex.test(value!))
+                return "Only lowercase letters, numbers, _, -, and ~ are allowed";
+
+                return true;
+              }
+          })}
+          className="startup-form_input"
+          placeholder="Startup URL Slug"
+        />
+        {errors.slug && <p className="startup-form_error">{errors.slug.message}</p>}
+      </div>
+      }
+       
       {/* IMAGE  */}
       <div>
         <label className="startup-form_label">
@@ -157,12 +229,11 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           onDragOver={(e) => e.preventDefault()}
           className={`startup-form_dropbox ${image? "border-blue-500 bg-blue-50 dark:bg-sky-800/50": "border-black"} `}
         >
-        
-          {image ? (
-            <>
+        {
+          (image || existingImageUrl) ? <>
             <div className="relative w-full h-48">
                 <Image
-                src={URL.createObjectURL(image)}
+                src={image ? URL.createObjectURL(image) : existingImageUrl}
                 alt="Cover Image"
                 fill
                 className="object-cover rounded-md"
@@ -173,13 +244,13 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 type="button"
                 onClick={() => {
                   setImage(null);
+                  setExistingImageUrl(null);
                 }}
                 className="absolute top-2 right-2 z-10 bg-black/60 text-white px-2 py-1 text-xs rounded-md"
               >
                 <X/>
               </button>
-            </>
-          ) : (
+            </> :
             <div className="flex flex-col items-center justify-center space-y-2 font-black">
               {/* Image Upload Animation  */}
               <svg
@@ -215,7 +286,7 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 Recommended aspect ratio: 16:9
               </p>
             </div>
-          )}
+        }
 
           <Input
             type="file"

@@ -5,7 +5,6 @@ import { EllipsisVertical, Edit, Trash2 } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -52,17 +51,17 @@ const StartupMenu = ({slug, startup_id, email }: {slug:string, startup_id:string
           className="bg-white-100 text-black border-2 shadow-sm z-10 rounded-2xl p-2"
         >
           {/* Edit */}
-          <DropdownMenuItem className="flex items-center cursor-pointer hover:bg-red-600 w-full px-4 py-2 rounded-2xl">
+          <Link href={`/startup/edit/${slug}`} className="flex items-center cursor-pointer hover:bg-neutral/50 w-full px-4 py-2 rounded-2xl">
             <Edit className="mr-2 h-4 w-4" />
-            <Link href={`/startup/edit/${slug}`}>Edit</Link>
-          </DropdownMenuItem>
+            <span>Edit</span>
+          </Link>
 
           {/* Delete */}
           <AlertDialogTrigger asChild>
-            <DropdownMenuItem className="flex items-center text-red-600 cursor-pointer hover:bg-red-100 w-full px-4 py-2 rounded-2xl">
+            <div className="flex items-center text-red-600 cursor-pointer hover:bg-red-200 w-full px-4 py-2 rounded-2xl">
               <Trash2 className="mr-2 h-4 w-4" />
               Delete
-            </DropdownMenuItem>
+            </div>
           </AlertDialogTrigger>
         </DropdownMenuContent>
       </DropdownMenu>

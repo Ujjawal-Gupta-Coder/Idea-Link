@@ -26,7 +26,7 @@ export const STARTUP_BY_SLUG_QUERY = defineQuery(`*[_type == "startup" && slug =
   _createdAt,
   _id,
   author -> {
-    name, image, bio, username, _id
+    name, image, bio, username, _id, email
   },
   category,
   description,
@@ -80,4 +80,13 @@ export const STARTUPS_BY_AUTHOR_QUERY =
   category,
   image,
 }`);
+
+
+export const AUTHOR_BY_STARTUP_ID_QUERY =
+  defineQuery(`*[_type=="startup" && _id == $id][0] {
+  author -> {
+    _id, email, name, username
+  } 
+}
+`);
 
