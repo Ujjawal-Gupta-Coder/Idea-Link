@@ -232,7 +232,7 @@ export type STARTUPS_QUERYResult = Array<{
   } | null;
 }>;
 // Variable: STARTUP_BY_SLUG_QUERY
-// Query: *[_type == "startup" && slug == $slug][0]{  _createdAt,  _id,  author -> {    name, image, bio, username, _id  },  category,  description,  image,  pitch,  slug,  title,  views}
+// Query: *[_type == "startup" && slug == $slug][0]{  _createdAt,  _id,  author -> {    name, image, bio, username, _id, email  },  category,  description,  image,  pitch,  slug,  title,  views}
 export type STARTUP_BY_SLUG_QUERYResult = {
   _createdAt: string;
   _id: string;
@@ -253,6 +253,7 @@ export type STARTUP_BY_SLUG_QUERYResult = {
     bio: string | null;
     username: string | null;
     _id: string;
+    email: string | null;
   } | null;
   category: string | null;
   description: string | null;
@@ -363,16 +364,27 @@ export type STARTUPS_BY_AUTHOR_QUERYResult = Array<{
     _type: "image";
   } | null;
 }>;
+// Variable: AUTHOR_BY_STARTUP_ID_QUERY
+// Query: *[_type=="startup" && _id == $id][0] {  author -> {    _id, email, name, username  } }
+export type AUTHOR_BY_STARTUP_ID_QUERYResult = {
+  author: {
+    _id: string;
+    email: string | null;
+    name: string | null;
+    username: string | null;
+  } | null;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"startup\" && \n    (\n      !defined($query) ||\n      lower(title) match \"*\" + lower($query) + \"*\" ||\n      lower(category) match \"*\" + lower($query) + \"*\" ||\n      lower(author->name) match \"*\" + lower($query) + \"*\"\n    )\n  ] | order(_createdAt desc) {\n  _id, \n  title, \n  slug,\n  _createdAt,\n  author -> {\n    name, image, username\n  }, \n  views,\n  description,\n  category,\n  image,\n}": STARTUPS_QUERYResult;
-    "*[_type == \"startup\" && slug == $slug][0]{\n  _createdAt,\n  _id,\n  author -> {\n    name, image, bio, username, _id\n  },\n  category,\n  description,\n  image,\n  pitch,\n  slug,\n  title,\n  views\n} ": STARTUP_BY_SLUG_QUERYResult;
+    "*[_type == \"startup\" && slug == $slug][0]{\n  _createdAt,\n  _id,\n  author -> {\n    name, image, bio, username, _id, email\n  },\n  category,\n  description,\n  image,\n  pitch,\n  slug,\n  title,\n  views\n} ": STARTUP_BY_SLUG_QUERYResult;
     "\n  *[_type == \"startup\" && _id == $id][0]{\n    _id, views\n  }\n": STARTUP_VIEWS_BY_ID_QUERYResult;
     "\n*[_type == \"author\" && email == $email][0] {\n  _id,\n  name,\n  email,\n  username,\n  image,\n  bio\n}\n": AUTHOR_BY_EMAIL_QUERYResult;
     "\n*[_type == \"author\" && username == $username][0] {\n  _id,\n  name,\n  email,\n  username,\n  image,\n  bio\n}\n": AUTHOR_BY_USERNAME_QUERYResult;
     "*[_type == \"startup\" && author._ref == $id] | order(_createdAt desc) {\n  _id, \n  title, \n  slug,\n  _createdAt,\n  author -> {\n    _id, name, image, bio, username, email\n  }, \n  views,\n  description,\n  category,\n  image,\n}": STARTUPS_BY_AUTHOR_QUERYResult;
+    "*[_type==\"startup\" && _id == $id][0] {\n  author -> {\n    _id, email, name, username\n  } \n}\n": AUTHOR_BY_STARTUP_ID_QUERYResult;
   }
 }

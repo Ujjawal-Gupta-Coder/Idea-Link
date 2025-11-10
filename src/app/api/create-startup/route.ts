@@ -80,6 +80,7 @@ export async function POST(req:Request) {
       // image should be uploaded to sanity assets 
       let imageAsset = null;
       if(simpleData.image) {
+
         const image = simpleData.image;
         const arrayBuffer = await image.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
