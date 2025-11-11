@@ -37,7 +37,13 @@ const page = async ({params}: {params: Promise<{username: string}>}) => {
         <p className="text-30-extrabold mt-7 text-center">
           @{user?.username}
         </p>
-        <p className="mt-1 text-center text-14-normal">{user?.bio}</p>
+        
+        <Link href={`mailto:${user.email}`} className='mt-1 text-center'>
+          <span className='text-black-100 text-sm'>Email:</span> 
+          <span className='text-black font-bold text-sm hover:text-accent'>{user?.email}</span>
+        </Link>
+
+        <p className="mt-2 text-center text-14-normal">{user?.bio}</p>
 
       </div>
 
