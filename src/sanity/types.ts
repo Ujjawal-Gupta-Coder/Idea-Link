@@ -322,6 +322,27 @@ export type AUTHOR_BY_USERNAME_QUERYResult = {
   } | null;
   bio: string | null;
 } | null;
+// Variable: AUTHOR_BY_ID_QUERY
+// Query: *[_type == "author" && _id == $id][0] {  _id,  name,  email,  username,  image,  bio}
+export type AUTHOR_BY_ID_QUERYResult = {
+  _id: string;
+  name: string | null;
+  email: string | null;
+  username: string | null;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  bio: string | null;
+} | null;
 // Variable: STARTUPS_BY_AUTHOR_QUERY
 // Query: *[_type == "startup" && author._ref == $id] | order(_createdAt desc) {  _id,   title,   slug,  _createdAt,  author -> {    _id, name, image, bio, username, email  },   views,  description,  category,  image,}
 export type STARTUPS_BY_AUTHOR_QUERYResult = Array<{
@@ -384,6 +405,7 @@ declare module "@sanity/client" {
     "\n  *[_type == \"startup\" && _id == $id][0]{\n    _id, views\n  }\n": STARTUP_VIEWS_BY_ID_QUERYResult;
     "\n*[_type == \"author\" && email == $email][0] {\n  _id,\n  name,\n  email,\n  username,\n  image,\n  bio\n}\n": AUTHOR_BY_EMAIL_QUERYResult;
     "\n*[_type == \"author\" && username == $username][0] {\n  _id,\n  name,\n  email,\n  username,\n  image,\n  bio\n}\n": AUTHOR_BY_USERNAME_QUERYResult;
+    "\n*[_type == \"author\" && _id == $id][0] {\n  _id,\n  name,\n  email,\n  username,\n  image,\n  bio\n}\n": AUTHOR_BY_ID_QUERYResult;
     "*[_type == \"startup\" && author._ref == $id] | order(_createdAt desc) {\n  _id, \n  title, \n  slug,\n  _createdAt,\n  author -> {\n    _id, name, image, bio, username, email\n  }, \n  views,\n  description,\n  category,\n  image,\n}": STARTUPS_BY_AUTHOR_QUERYResult;
     "*[_type==\"startup\" && _id == $id][0] {\n  author -> {\n    _id, email, name, username\n  } \n}\n": AUTHOR_BY_STARTUP_ID_QUERYResult;
   }
