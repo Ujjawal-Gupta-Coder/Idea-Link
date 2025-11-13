@@ -1,3 +1,5 @@
+'use client'
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,15 +12,25 @@ import { Button } from "@/components/ui/button";
 import { User, LogOut, PenLine } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
-import SignOut from "./SignOut";
 import { getFallbackAvatar, getImageLink } from "@/lib/utils";
 import { Author } from "@/sanity/types";
+import { signOut } from "next-auth/react";
+import { useState } from "react";
 
 
 export default function UserMenu({user}: {user: Author}) {
-    
+    const [open, setOpen] = useState(false);
+
+    const handleSignOut = async () => {
+      await signOut();
+    }
+
+    const closeDialog = () => {
+      setOpen(false);
+    }
+
   return (
-    <DropdownMenu >
+    <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="rounded-full p-0 w-10 h-10 hover:ring-2 hover:ring-secondary">
           <Avatar className="size-10 cursor-pointer border-2 border-accent">
@@ -33,19 +45,20 @@ export default function UserMenu({user}: {user: Author}) {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className="hover:bg-primary-100 rounded-xl">
+        <DropdownMenuItem className="hover:bg-primary-100 rounded-xl" onClick={closeDialog}>
           <User className="mr-2 h-4 w-4" /> <Link href={`/user/${user.username}`} >Profile</Link>
         </DropdownMenuItem>
 
-        <DropdownMenuItem className="hover:bg-primary-100 rounded-xl">
+        <DropdownMenuItem className="hover:bg-primary-100 rounded-xl" onClick={closeDialog}>
           <PenLine className="mr-2 h-4 w-4" /> <Link href={"/startup/create"} >Create Post</Link>
         </DropdownMenuItem>
         
         <DropdownMenuSeparator className="bg-border" />
 
-        <DropdownMenuItem className="bg-red-100 hover:bg-red-200 text-red-600 font-semibold rounded-xl">
-           <LogOut className="mr-2 h-4 w-4" /> <SignOut />
-        </DropdownMenuItem>
+        <div className="bg-red-100 hover:bg-red-200 text-red-600 font-semibold rounded-xl flex justify-start items-center gap-1 px-2 h-8 mt-2">
+           <LogOut className="mr-2 h-5 w-5" /> 
+           <button className="cursor-pointer" onClick={handleSignOut} >Sign Out</button>
+        </div>
 
       </DropdownMenuContent>
       

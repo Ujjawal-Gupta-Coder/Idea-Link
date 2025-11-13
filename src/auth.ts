@@ -13,7 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     signIn : async ({ user }) => {
       try {
-          const raw = await fetch(`${process.env.BASE_URL}/api/create-user`, {
+          const raw = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/create-user`, {
             method: "POST",
             headers: {
               "content-type": "application/json",

@@ -1,7 +1,7 @@
 import ProfileAvatar from '@/components/ProfileAvatar';
 import { formatDate, getImageLink } from '@/lib/utils';
 import { client } from '@/sanity/lib/client';
-import { STARTUP_BY_SLUG_QUERY } from '@/sanity/lib/queries';
+import { AUTHOR_BY_EMAIL_QUERY, STARTUP_BY_SLUG_QUERY } from '@/sanity/lib/queries';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -9,10 +9,14 @@ import React, { Suspense } from 'react'
 import markdownit from "markdown-it";
 import View from '@/components/View';
 import { Skeleton } from '@/components/ui/skeleton';
+import ConnectDialog from '@/components/ConnectDialog';
+import { auth } from '@/auth';
 
 const page = async ({params}: {params: Promise<{slug: string}>}) => {
     const { slug } = await params;
-    const post = await client.fetch(STARTUP_BY_SLUG_QUERY, {slug});
+    const [post, session] = await Promise.all([client.fetch(STARTUP_BY_SLUG_QUERY, {slug}), auth()]);
+    const {name: senderName, username: senderUsername, email: senderMail} = session?.user?.email ? await client.fetch(AUTHOR_BY_EMAIL_QUERY, {email: session.user.email}) : {name: null, username:null, email:null}
+
     const md = markdownit();
     const markdown = md.render(post?.pitch || "");
     if(!post) return notFound();
@@ -35,7 +39,7 @@ const page = async ({params}: {params: Promise<{slug: string}>}) => {
         </div>
 
         <div className="space-y-5 mt-10 max-w-4xl mx-auto">
-          <div className="flex-between gap-5">
+          <div className="flex-between gap-5 flex-col sm:flex-row">
             <Link
               href={`/user/${post.author?.username}`}
               className="flex gap-2 items-center mb-3"
@@ -65,6 +69,19 @@ const page = async ({params}: {params: Promise<{slug: string}>}) => {
           )}
         </div>
         
+        {
+          (!session?.user || session.user.email !== post.author?.email) && 
+          <ConnectDialog 
+            senderName={senderName} 
+            senderUsername={senderUsername} 
+            senderMail={senderMail} 
+            receiverName={post?.author?.name ? post.author.name : null} 
+            receiverMail={post?.author?.email ? post.author.email : null} 
+            startupTitle={post?.title ? post.title : null}
+            startupSlug={post?.slug ? post.slug : null}
+          />
+        }
+       
        <hr className="divider" />
 
           <Suspense fallback={<Skeleton className='view_skeleton' />}>
