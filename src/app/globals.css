@@ -191,7 +191,7 @@
   }
 
   .card_grid {
-    @apply grid md:grid-cols-3 sm:grid-cols-2 gap-5;
+    @apply grid lg:grid-cols-3 md:grid-cols-2 gap-5;
   }
 
   .card_grid-sm {
@@ -221,13 +221,21 @@
     @apply rounded-full overflow-hidden object-cover border-[3px] border-black drop-shadow-lg;
   }
 
-  /* idea details */
+  /* startup details */
   .divider {    
     @apply border-dotted bg-zinc-400 max-w-4xl my-10 mx-auto;
   }
 
   .view_skeleton {
     @apply bg-zinc-400 h-10 w-24 rounded-lg fixed bottom-[40px] md:bottom-3 right-3;
+  }
+
+  .startup_details_connect_btn {
+    @apply font-bold text-xl sm:text-2xl md:text-3xl uppercase rounded-2xl border-2 border-zinc-400 
+  shadow-2xl px-6 py-4 sm:px-8 sm:py-5 md:px-10 md:py-6 cursor-pointer 
+  bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% text-white
+  bg-[length:200%_200%] transition-all duration-500 ease-in-out 
+  hover:bg-[position:100%_0] hover:scale-105 hover:shadow-[0_0_25px_rgba(56,189,248,0.6)]
   }
 
   /* navbar */
