@@ -34,6 +34,7 @@ export const STARTUP_BY_SLUG_QUERY = defineQuery(`*[_type == "startup" && slug =
   pitch,
   slug,
   title,
+  keywords,
   views
 } `) 
 
@@ -99,5 +100,25 @@ export const AUTHOR_BY_STARTUP_ID_QUERY =
     _id, email, name, username
   } 
 }
+`);
+
+
+export const RECOMMENDED_STARTUP_QUERY =
+  defineQuery(`*[_type == "startup" && _id != $id && count((keywords[])[@ in $keywords]) > 0] {
+   _createdAt,
+  _id,
+  author -> {
+    name, image, bio, username, _id, email
+  },
+  category,
+  description,
+  image,
+  pitch,
+  slug,
+  title,
+  keywords,
+  views
+}
+| order(count((keywords[])[@ in $keywords]) desc)[0...10]
 `);
 

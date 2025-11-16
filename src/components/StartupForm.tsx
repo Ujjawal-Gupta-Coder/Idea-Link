@@ -43,10 +43,11 @@ export default function StartupForm({isEditMode=false, initialValue=null}: {isEd
     const [pitch, setPitch] = useState(initialValue?.pitch ? initialValue.pitch : "");
     const [image, setImage] = useState<File|null> (null);
     const [existingImageUrl, setExistingImageUrl] = useState(isEditMode && initialValue?.image ? getImageLink(initialValue.image).url() : null);
-
+    const [pitchGenerating, setPitchGenerating] = useState(false);
 
    const {
     register,
+    getValues,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<StartupForm>({
@@ -107,6 +108,32 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0];
   if (file && file.type.startsWith("image/")) {
     setImage(file);
+  }
+};
+
+const handleEnhancePitch = async () => {
+  try {
+    setPitchGenerating(true);
+  const {title, description, category} = getValues();
+  const raw = await fetch("/api/enhanced-pitch", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json"
+    },
+    body: JSON.stringify({title, description, category, pitch})
+  })
+  const response = await raw.json();
+
+  if(response.success) {
+    setPitch(response.data);
+    toast.success(response.message, {theme});
+  } else {
+    toast.error(response.message, {theme});
+  }
+  
+   setPitchGenerating(false)
+  } catch(e) {
+      toast.error("Something went wrong while generating pitch", {theme});
   }
 };
 
@@ -319,6 +346,19 @@ const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             disallowedElements: ["style"],
           }}
         />
+
+        
+        <div className="w-full relative flex items-center justify-end">
+          
+          <Button disabled={pitchGenerating} className="mt-2 text-sm rounded-xl cursor-pointer bg-gradient-to-r from-sky-500 to-emerald-500 text-black font-semibold transition-all hover:scale-[1.03]" onClick={handleEnhancePitch} type="button"> 
+              {
+                pitchGenerating ? "Generating ..." : "Generate with AI"
+              }
+            
+              <Image src={'/gemini_ai_icon.png'} alt="AI Icon" height={20} width={20} />
+          </Button>
+          
+        </div>
       </div> 
 
 

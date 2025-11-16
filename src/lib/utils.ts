@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge"
 import imageUrlBuilder from '@sanity/image-url'
 import { client } from "@/sanity/lib/client"
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import { GoogleGenAI } from "@google/genai"
 
 const builder = imageUrlBuilder(client);
 
@@ -47,4 +48,51 @@ export function generateUniqueSlug(name:string, option?:{hard?: boolean, type?: 
   const code = String(Math.floor(Math.random() * (10**digit))).padStart(digit, "0");
 
   return `${name}${option?.type === "startup" ? "~" : "-"}${code}`;
+}
+
+export const generateKeywords_geminiAI = async ({title, description, category, pitch}:{title:string|undefined, description:string|undefined, category:string|undefined, pitch:string|undefined}) => {
+  try {
+
+    if(!title && !description && !category) return [];
+
+  const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+  const prompt = `
+    You generate exactly 10 MID-LEVEL category keywords for startup recommendation.
+
+    Your keywords must be:
+    - NOT too specific (avoid niche features, product names, or narrow use-cases)
+    - NOT too generic (avoid words like: tech, business, platform, app, service)
+    - MID-LEVEL categories that can group multiple similar startups
+    - 1–2 words only
+    - Broad enough to match related startups, but specific enough to separate unrelated ones
+    - No duplicates
+    - EXACTLY 10 keywords
+    - Output ONLY the keywords separated by commas
+
+    Here is your target balance:
+    - Too specific: ❌ "cricket bat customization", "AI diabetes predictor"
+    - Too generic: ❌ "technology", "application", "company", "tool"
+    - Perfect mid-level: ✔ "sports", "health", "finance", "education", "wellness", "analytics"
+
+    Use that standard when generating keywords.
+
+    Startup Info:
+    Title: ${title}
+    Category: ${category}
+    Pitch: ${pitch}
+    Description: ${description}
+  `;
+
+
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: prompt,
+  });
+
+  return response.text ? response.text.split(", ") : [];
+  } 
+  catch(error) {
+      console.error("Error in generating Keywords for startup: ", error);
+      return [];
+    }
 }
