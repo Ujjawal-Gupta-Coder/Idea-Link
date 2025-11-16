@@ -1,7 +1,7 @@
 import ProfileAvatar from '@/components/ProfileAvatar';
 import { formatDate, getImageLink } from '@/lib/utils';
 import { client } from '@/sanity/lib/client';
-import { AUTHOR_BY_EMAIL_QUERY, STARTUP_BY_SLUG_QUERY } from '@/sanity/lib/queries';
+import { AUTHOR_BY_EMAIL_QUERY, RECOMMENDED_STARTUP_QUERY, STARTUP_BY_SLUG_QUERY } from '@/sanity/lib/queries';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -11,12 +11,15 @@ import View from '@/components/View';
 import { Skeleton } from '@/components/ui/skeleton';
 import ConnectDialog from '@/components/ConnectDialog';
 import { auth } from '@/auth';
+import StartupCard from '@/components/StartupCard';
+import { StartupCardType } from '@/types';
 
 const page = async ({params}: {params: Promise<{slug: string}>}) => {
     const { slug } = await params;
     const [post, session] = await Promise.all([client.fetch(STARTUP_BY_SLUG_QUERY, {slug}), auth()]);
     const {name: senderName, username: senderUsername, email: senderMail} = session?.user?.email ? await client.fetch(AUTHOR_BY_EMAIL_QUERY, {email: session.user.email}) : {name: null, username:null, email:null}
 
+    const recommendedStartups = post ? await client.fetch(RECOMMENDED_STARTUP_QUERY, {id: post?._id, keywords:post?.keywords}) : [];
     const md = markdownit();
     const markdown = md.render(post?.pitch || "");
     if(!post) return notFound();
@@ -84,9 +87,30 @@ const page = async ({params}: {params: Promise<{slug: string}>}) => {
        
        <hr className="divider" />
 
-          <Suspense fallback={<Skeleton className='view_skeleton' />}>
-              <View id={post._id} />
-          </Suspense>
+         {recommendedStartups?.length > 0 && (
+          <div className="max-w-4xl mx-auto">
+            <div className="font-semibold text-[20px] md:text-[25px] lg:text-[30px] text-black flex items-center gap-3 w-full">
+              Similar Startups 
+              <div className='flex'>
+                <Image src={'/gemini_ai_icon.png'} alt="AI Icon" height={18} width={18} /> 
+               <span className='text-zinc-500 text-[7px]'>Powered by AI</span>
+              </div>
+              
+            </div>
+
+            <ul className="mt-7 card_grid-sm">
+              {
+                recommendedStartups.map((post: StartupCardType, i: number) => (
+                  <StartupCard key={i} post={post} />
+                ))
+              }
+            </ul>
+          </div>
+        )}
+
+        <Suspense fallback={<Skeleton className='view_skeleton' />}>
+            <View id={post._id} />
+        </Suspense>
 
       </section>
     </>

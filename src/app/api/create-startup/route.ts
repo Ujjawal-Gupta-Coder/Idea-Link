@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { generateUniqueSlug } from "@/lib/utils";
+import { generateKeywords_geminiAI, generateUniqueSlug } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
 import { AUTHOR_BY_EMAIL_QUERY, STARTUP_BY_SLUG_QUERY } from "@/sanity/lib/queries";
 import { writeClient } from "@/sanity/lib/write-client";
@@ -105,11 +105,15 @@ export async function POST(req:Request) {
         slug = generateUniqueSlug(simpleData.title!, {hard: true, type: "startup"});
       }
 
+      // geting keywords
+      const keywords = await generateKeywords_geminiAI({title:simpleData.title, category:simpleData.category, description:simpleData.description, pitch:simpleData.pitch});
+          
 
       // Finally create the startup
       const result = await writeClient.create({...simpleData,
         _type: "startup",
         views: 0,
+        keywords,
         slug,
         author: {
           _type: "reference",

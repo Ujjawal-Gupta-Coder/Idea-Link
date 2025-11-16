@@ -61,6 +61,22 @@ export const startup = defineType({
       }
     }),
     defineField({
+      name: "keywords",
+      title: "Keywords",
+      type: "array",
+      of: [
+        {
+          type: "string",
+          validation: (Rule) =>
+            Rule.required().min(1).error("Keyword cannot be empty")
+                .max(20).warning("Keep keywords under 20 characters"),
+        },
+      ],
+      options: {
+        layout: "tags",
+      },
+    }),
+    defineField({
       name: "pitch",
       title: "Pitch",
       type: "markdown",
