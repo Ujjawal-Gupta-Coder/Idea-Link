@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { generateWithFallback } from "@/lib/utils";
 
 export const POST = async (req: Request) => {
  try {
@@ -11,7 +11,6 @@ export const POST = async (req: Request) => {
 
 
 
-const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
 
   const prompt = `
     You are an expert pitch-writer who creates visually impressive and highly engaging startup pitches using advanced Markdown formatting.
@@ -43,10 +42,7 @@ const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
     Description: ${description}
   `;
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-  });
+  const response = await generateWithFallback(prompt);
 
    return Response.json({
     success: true,
