@@ -1,5 +1,6 @@
 export const revalidate = 0;
 
+import RecentViewStartups from "@/components/RecentViewStartups";
 import SearchForm from "@/components/SearchForm"
 import StartupCard from "@/components/StartupCard";
 import { sanityFetch } from "@/sanity/lib/live";
@@ -11,7 +12,7 @@ const page = async ( {searchParams} : {searchParams?: Promise<{query?: string}>}
   const query = result?.query || null;
   
   const {data: posts} = await sanityFetch({query: STARTUPS_QUERY, params: {query}});
-  
+
   return (
     <>
     <section className="hero_container">
@@ -28,6 +29,13 @@ const page = async ( {searchParams} : {searchParams?: Promise<{query?: string}>}
         <SearchForm />
       </section>
 
+{/* Recently Viewed Startups  */}
+{
+  !query && <RecentViewStartups />
+}
+    
+
+    {/* All Starups  */}
       <section className="section_container">
         <p className="text-30-semibold">
           {query ? `Search results for "${query}"` : "All Startups"}

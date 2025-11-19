@@ -7,7 +7,7 @@ import { formatDate, getImageLink } from '@/lib/utils';
 import ProfileAvatar from "./ProfileAvatar";
 import StartupMenu from "./StartupMenu";
 
-const StartupCard = ({ post, showMenu = false }: { post: StartupCardType, showMenu?: boolean }) => {
+const StartupCard = ({ post, showMenu = false, forRecentView = false }: { post: StartupCardType, showMenu?: boolean, forRecentView?: boolean }) => {
   const {
     _createdAt,
     views,
@@ -21,7 +21,7 @@ const StartupCard = ({ post, showMenu = false }: { post: StartupCardType, showMe
   } = post;
 
   return (
-    <li className="startup-card group">
+    <li className={`startup-card group ${forRecentView ? "flex-shrink-0 w-[300px] md:w-[330px] lg:w-[360px] list-none" : ""}`}>
       <div className="flex-between">
         <p className="startup_card_date">{formatDate(_createdAt)}</p>
         <div className="flex gap-1.5">
