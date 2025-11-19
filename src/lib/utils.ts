@@ -50,12 +50,29 @@ export function generateUniqueSlug(name:string, option?:{hard?: boolean, type?: 
   return `${name}${option?.type === "startup" ? "~" : "-"}${code}`;
 }
 
+ export const generateWithFallback = async (prompt: string) => {
+  const models = ["gemini-2.5-flash", "gemini-2.0-flash"];
+  const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
+
+  for (const model of models) {
+    try {
+      return await ai.models.generateContent({
+        model,
+        contents: prompt,
+      });
+    } catch (error) {
+      console.error(`${model} failed`, error);
+    }
+  }
+
+  throw new Error("All models failed");
+};
+
+
 export const generateKeywords_geminiAI = async ({title, description, category, pitch}:{title:string|undefined, description:string|undefined, category:string|undefined, pitch:string|undefined}) => {
   try {
 
     if(!title && !description && !category) return [];
-
-  const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
   const prompt = `
     You generate exactly 10 MID-LEVEL category keywords for startup recommendation.
 
@@ -84,10 +101,7 @@ export const generateKeywords_geminiAI = async ({title, description, category, p
   `;
 
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-  });
+  const response = await generateWithFallback(prompt);
 
   return response.text ? response.text.split(", ") : [];
   } 

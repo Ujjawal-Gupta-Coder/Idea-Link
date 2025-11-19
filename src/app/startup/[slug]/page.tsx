@@ -14,6 +14,7 @@ import { auth } from '@/auth';
 import StartupCard from '@/components/StartupCard';
 import { StartupCardType } from '@/types';
 import AddToLocalStorage from '@/components/AddToLocalStorage';
+import ActionBar from '@/components/ActionBar';
 
 const page = async ({params}: {params: Promise<{slug: string}>}) => {
     const { slug } = await params;
@@ -87,6 +88,9 @@ const page = async ({params}: {params: Promise<{slug: string}>}) => {
           />
         }
        
+       <hr className="divider" />
+       <ActionBar post={post} />
+
        <hr className="divider" />
 
          {recommendedStartups?.length > 0 && (
