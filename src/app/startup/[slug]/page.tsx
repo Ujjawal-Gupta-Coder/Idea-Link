@@ -13,6 +13,7 @@ import ConnectDialog from '@/components/ConnectDialog';
 import { auth } from '@/auth';
 import StartupCard from '@/components/StartupCard';
 import { StartupCardType } from '@/types';
+import AddToLocalStorage from '@/components/AddToLocalStorage';
 
 const page = async ({params}: {params: Promise<{slug: string}>}) => {
     const { slug } = await params;
@@ -25,6 +26,7 @@ const page = async ({params}: {params: Promise<{slug: string}>}) => {
     if(!post) return notFound();
   return (
     <>
+      <AddToLocalStorage post={post} />
       <section className="hero_container !min-h-[230px]">
         <p className="tag">{formatDate(post?._createdAt)}</p>
         <h1 className="heading">{post.title}</h1>
