@@ -103,22 +103,79 @@ export const AUTHOR_BY_STARTUP_ID_QUERY =
 `);
 
 
-export const RECOMMENDED_STARTUP_QUERY =
-  defineQuery(`*[_type == "startup" && _id != $id && count((keywords[])[@ in $keywords]) > 0] {
+export const RECOMMENDED_STARTUP_QUERY = (keywords: string[], id:string|null = null, limit: number = 5) => {
+  
+  const countScript = keywords.map((_, i) => {
+    return `count(keywords[@ match $word${i+1}])>0`
+  }).join(" || ");
+
+  const orderScript = keywords.map((_, i) => {
+    return `count(keywords[@ match $word${i+1}])`
+  }).join(" + ");
+
+  const params = {
+    id: id,
+    limit,
+  }
+
+  keywords.forEach((word, i) => {
+    params[`word${i+1}`] = `*${word}*`;
+  })
+
+  const query = `
+  *[_type == "startup" && 
+    ($id == null || _id != $id) &&
+    (${countScript})
+  ] 
+  |
+  order(
+    (${orderScript})
+    desc
+  ) [0...$limit]
+  {
+    _createdAt,
+    _id,
+    author -> {
+      name, image, bio, username, _id, email
+    },
+    category,
+    description,
+    image,
+    pitch,
+    slug,
+    title,
+    keywords,
+    views
+  }
+`;
+
+  return {
+    query: defineQuery(query), 
+    params
+  };
+}
+  
+
+
+export const MOST_VIEWED_STARTUP_QUERY = 
+defineQuery(`*[_type == "startup"] {
    _createdAt,
-  _id,
-  author -> {
+  views,
+  author-> {
     name, image, bio, username, _id, email
   },
-  category,
-  description,
-  image,
-  pitch,
-  slug,
   title,
-  keywords,
-  views
+  category,
+  image,
+  description,
+  slug,
+  _id,
 }
-| order(count((keywords[])[@ in $keywords]) desc)[0...10]
-`);
+| order(views desc)[0...5]`);
 
+
+export const KEYWORDS_FROM_STARTUP_ID_QUERY = 
+defineQuery(`*[_type == "startup" && _id in $ids] {
+  keywords
+}
+`);
