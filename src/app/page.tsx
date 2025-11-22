@@ -1,6 +1,8 @@
 export const revalidate = 0;
 
+import { auth } from "@/auth";
 import RecentViewStartups from "@/components/RecentViewStartups";
+import RecommendedStartups from "@/components/RecommendedStartups";
 import SearchForm from "@/components/SearchForm"
 import StartupCard from "@/components/StartupCard";
 import { sanityFetch } from "@/sanity/lib/live";
@@ -10,13 +12,13 @@ import {StartupCardType} from "@/types";
 const page = async ( {searchParams} : {searchParams?: Promise<{query?: string}>}) => {
   const result = await searchParams;
   const query = result?.query || null;
-  
+  const session = await auth();
   const {data: posts} = await sanityFetch({query: STARTUPS_QUERY, params: {query}});
 
   return (
     <>
     <section className="hero_container">
-      <p className="tag">Pitch, vote and grow</p>
+      <p className="tag">Pitch and grow together</p>
         <h1 className="heading">
           Every Great Startup <br/>
           Starts With an <span className="heading-gradient-text">Idea</span> 
@@ -34,6 +36,10 @@ const page = async ( {searchParams} : {searchParams?: Promise<{query?: string}>}
   !query && <RecentViewStartups />
 }
     
+{/* Top recommendation Startups  */}
+{
+  !query && session?.user && <RecommendedStartups headline={"Top Picks for You"} startups={[]}/>
+}
 
     {/* All Starups  */}
       <section className="section_container">

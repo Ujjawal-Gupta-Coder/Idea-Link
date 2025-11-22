@@ -21,7 +21,7 @@ const StartupCard = ({ post, showMenu = false, forRecentView = false }: { post: 
   } = post;
 
   return (
-    <li className={`startup-card group ${forRecentView ? "flex-shrink-0 w-[300px] md:w-[330px] lg:w-[360px] list-none" : ""}`}>
+    <li className={`startup-card group ${forRecentView ? "flex-shrink-0 w-[300px] h-[450px] md:w-[330px] lg:w-[360px] list-none" : ""}`}>
       <div className="flex-between">
         <p className="startup_card_date">{formatDate(_createdAt)}</p>
         <div className="flex gap-1.5">

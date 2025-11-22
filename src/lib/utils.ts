@@ -74,36 +74,33 @@ export const generateKeywords_geminiAI = async ({title, description, category, p
 
     if(!title && !description && !category) return [];
   const prompt = `
-    You generate exactly 10 MID-LEVEL category keywords for startup recommendation.
+    You are an expert at categorizing startups into broad but meaningful themes.  
+Generate EXACTLY 10 mid-level category keywords to help match similar startups.
 
-    Your keywords must be:
-    - NOT too specific (avoid niche features, product names, or narrow use-cases)
-    - NOT too generic (avoid words like: tech, business, platform, app, service)
-    - MID-LEVEL categories that can group multiple similar startups
-    - 1–2 words only
-    - Broad enough to match related startups, but specific enough to separate unrelated ones
-    - No duplicates
-    - EXACTLY 10 keywords
-    - Output ONLY the keywords separated by commas
+Rules for every keyword:
+- lowercase only
+- exact one word only
+- mid-level category (not too generic, not too specific)
+- no repeating or overlapping ideas
+- avoid ultra-specific phrases like: "ai diabetes predictor", "nft cricket tickets"
+- should be useful for grouping similar startups
+- must reflect the startup’s domain, problem, audience, and context
+- output ONLY the 10 keywords separated by commas
 
-    Here is your target balance:
-    - Too specific: ❌ "cricket bat customization", "AI diabetes predictor"
-    - Too generic: ❌ "technology", "application", "company", "tool"
-    - Perfect mid-level: ✔ "sports", "health", "finance", "education", "wellness", "analytics"
+Good examples of mid-level keywords:  
+sports, health, finance, education, wellness, ai tools, analytics, travel, sustainability, security
 
-    Use that standard when generating keywords.
-
-    Startup Info:
-    Title: ${title}
-    Category: ${category}
-    Pitch: ${pitch}
-    Description: ${description}
+Startup Info:
+Title: ${title}
+Category: ${category}
+Pitch: ${pitch}
+Description: ${description}
   `;
 
 
   const response = await generateWithFallback(prompt);
 
-  return response.text ? response.text.split(", ") : [];
+  return response.text ? response.text.toLowerCase().split(", ") : [];
   } 
   catch(error) {
       console.error("Error in generating Keywords for startup: ", error);

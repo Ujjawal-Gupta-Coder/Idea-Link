@@ -397,11 +397,11 @@ export type AUTHOR_BY_STARTUP_ID_QUERYResult = {
     username: string | null;
   } | null;
 } | null;
-// Variable: RECOMMENDED_STARTUP_QUERY
-// Query: *[_type == "startup" && _id != $id && count((keywords[])[@ in $keywords]) > 0] {   _createdAt,  _id,  author -> {    name, image, bio, username, _id, email  },  category,  description,  image,  pitch,  slug,  title,  keywords,  views}| order(count((keywords[])[@ in $keywords]) desc)[0...10]
-export type RECOMMENDED_STARTUP_QUERYResult = Array<{
+// Variable: MOST_VIEWED_STARTUP_QUERY
+// Query: *[_type == "startup"] {   _createdAt,  views,  author-> {    name, image, bio, username, _id, email  },  title,  category,  image,  description,  slug,  _id,}| order(views desc)[0...5]
+export type MOST_VIEWED_STARTUP_QUERYResult = Array<{
   _createdAt: string;
-  _id: string;
+  views: number | null;
   author: {
     name: string | null;
     image: {
@@ -421,8 +421,8 @@ export type RECOMMENDED_STARTUP_QUERYResult = Array<{
     _id: string;
     email: string | null;
   } | null;
+  title: string | null;
   category: string | null;
-  description: string | null;
   image: {
     asset?: {
       _ref: string;
@@ -435,11 +435,14 @@ export type RECOMMENDED_STARTUP_QUERYResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   } | null;
-  pitch: string | null;
+  description: string | null;
   slug: string | null;
-  title: string | null;
+  _id: string;
+}>;
+// Variable: KEYWORDS_FROM_STARTUP_ID_QUERY
+// Query: *[_type == "startup" && _id in $ids] {  keywords}
+export type KEYWORDS_FROM_STARTUP_ID_QUERYResult = Array<{
   keywords: Array<string> | null;
-  views: number | null;
 }>;
 
 // Query TypeMap
@@ -454,6 +457,7 @@ declare module "@sanity/client" {
     "\n*[_type == \"author\" && _id == $id][0] {\n  _id,\n  name,\n  email,\n  username,\n  image,\n  bio\n}\n": AUTHOR_BY_ID_QUERYResult;
     "*[_type == \"startup\" && author._ref == $id] | order(_createdAt desc) {\n  _id, \n  title, \n  slug,\n  _createdAt,\n  author -> {\n    _id, name, image, bio, username, email\n  }, \n  views,\n  description,\n  category,\n  image,\n}": STARTUPS_BY_AUTHOR_QUERYResult;
     "*[_type==\"startup\" && _id == $id][0] {\n  author -> {\n    _id, email, name, username\n  } \n}\n": AUTHOR_BY_STARTUP_ID_QUERYResult;
-    "*[_type == \"startup\" && _id != $id && count((keywords[])[@ in $keywords]) > 0] {\n   _createdAt,\n  _id,\n  author -> {\n    name, image, bio, username, _id, email\n  },\n  category,\n  description,\n  image,\n  pitch,\n  slug,\n  title,\n  keywords,\n  views\n}\n| order(count((keywords[])[@ in $keywords]) desc)[0...10]\n": RECOMMENDED_STARTUP_QUERYResult;
+    "*[_type == \"startup\"] {\n   _createdAt,\n  views,\n  author-> {\n    name, image, bio, username, _id, email\n  },\n  title,\n  category,\n  image,\n  description,\n  slug,\n  _id,\n}\n| order(views desc)[0...5]": MOST_VIEWED_STARTUP_QUERYResult;
+    "*[_type == \"startup\" && _id in $ids] {\n  keywords\n}\n": KEYWORDS_FROM_STARTUP_ID_QUERYResult;
   }
 }
