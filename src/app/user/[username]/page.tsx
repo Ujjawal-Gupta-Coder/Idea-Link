@@ -20,7 +20,7 @@ const page = async ({params}: {params: Promise<{username: string}>}) => {
      <div className='flex flex-col gap-4 items-center'> 
         <div className="profile_card">
         <div className="profile_title">
-          <h3 className="text-24-black uppercase text-center line-clamp-1">
+          <h3 className="text-24-black uppercase text-center line-clamp-2">
             {user.name}
           </h3>
         </div>
