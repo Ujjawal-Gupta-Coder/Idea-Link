@@ -179,3 +179,15 @@ defineQuery(`*[_type == "startup" && _id in $ids] {
   keywords
 }
 `);
+
+export const FETCH_COMMENTS_BY_STARTUP_ID = 
+defineQuery(`
+  *[_type=="comment" && startup._ref == $id] | order(_createdAt desc) {
+    _id,
+    _createdAt,
+    author -> {
+      _id, name, image, username
+    },
+    message
+  }
+`);

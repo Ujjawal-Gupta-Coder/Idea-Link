@@ -13,8 +13,9 @@ import ConnectDialog from '@/components/ConnectDialog';
 import { auth } from '@/auth';
 import { StartupCardType } from '@/types';
 import AddToLocalStorage from '@/components/AddToLocalStorage';
-import ActionBar from '@/components/ActionBar';
 import RecommendedStartups from '@/components/RecommendedStartups';
+import StartupSummary from '@/components/StartupSummary';
+import CommentSection from '@/components/CommentSection';
 
 const page = async ({params}: {params: Promise<{slug: string}>}) => {
     const { slug } = await params;
@@ -69,6 +70,8 @@ const page = async ({params}: {params: Promise<{slug: string}>}) => {
             <p className="category-tag">{post.category}</p>
           </div>
 
+          <StartupSummary post={post}/>
+          
           <h3 className="text-30-bold">Pitch Details</h3>
 
           {markdown ? (
@@ -93,12 +96,10 @@ const page = async ({params}: {params: Promise<{slug: string}>}) => {
             startupSlug={post?.slug ? post.slug : null}
           />
         }
-       
+      
+       <CommentSection postId={post._id} authorId={post.author!._id} userEmail={session?.user?.email || null} />
        <hr className="divider" />
-       <ActionBar post={post} />
-
-       <hr className="divider" />
-
+      
       {
         recommendedStartups?.length > 0 && <RecommendedStartups headline={"More to Explore"} startups={recommendedStartups} />
       }

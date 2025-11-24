@@ -29,7 +29,7 @@ const StartupMenu = ({slug, startup_id, email }: {slug:string, startup_id:string
       method: "DELETE",
       body: JSON.stringify({startup_id, email}),
       headers: {
-        "content-type": "application/json",
+        "Content-Type": "application/json",
       }
      })
     const response = await raw.json();

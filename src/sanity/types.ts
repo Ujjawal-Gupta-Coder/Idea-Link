@@ -13,6 +13,27 @@
  */
 
 // Source: schema.json
+export type Comment = {
+  _id: string;
+  _type: "comment";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  startup?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "startup";
+  };
+  author?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "author";
+  };
+  message?: string;
+};
+
 export type Startup = {
   _id: string;
   _type: "startup";
@@ -190,7 +211,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Startup | Author | Markdown | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Comment | Startup | Author | Markdown | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: STARTUPS_QUERY
@@ -444,6 +465,30 @@ export type MOST_VIEWED_STARTUP_QUERYResult = Array<{
 export type KEYWORDS_FROM_STARTUP_ID_QUERYResult = Array<{
   keywords: Array<string> | null;
 }>;
+// Variable: FETCH_COMMENTS_BY_STARTUP_ID
+// Query: *[_type=="comment" && startup._ref == $id] | order(_createdAt desc) {    _id,    _createdAt,    author -> {      _id, name, image, username    },    message  }
+export type FETCH_COMMENTS_BY_STARTUP_IDResult = Array<{
+  _id: string;
+  _createdAt: string;
+  author: {
+    _id: string;
+    name: string | null;
+    image: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+    username: string | null;
+  } | null;
+  message: string | null;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -459,5 +504,6 @@ declare module "@sanity/client" {
     "*[_type==\"startup\" && _id == $id][0] {\n  author -> {\n    _id, email, name, username\n  } \n}\n": AUTHOR_BY_STARTUP_ID_QUERYResult;
     "*[_type == \"startup\"] {\n   _createdAt,\n  views,\n  author-> {\n    name, image, bio, username, _id, email\n  },\n  title,\n  category,\n  image,\n  description,\n  slug,\n  _id,\n}\n| order(views desc)[0...5]": MOST_VIEWED_STARTUP_QUERYResult;
     "*[_type == \"startup\" && _id in $ids] {\n  keywords\n}\n": KEYWORDS_FROM_STARTUP_ID_QUERYResult;
+    "\n  *[_type==\"comment\" && startup._ref == $id] | order(_createdAt desc) {\n    _id,\n    _createdAt,\n    author -> {\n      _id, name, image, username\n    },\n    message\n  }\n": FETCH_COMMENTS_BY_STARTUP_IDResult;
   }
 }
