@@ -41,6 +41,7 @@ const ProfileForm = ({user}: {user: ProfileFormUser}) => {
   const handleClearImage = () => {
     setExistingImageUrl(null);
     setImage(null);
+    if(imagePickerRef.current !== null) imagePickerRef.current.value = "";
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
