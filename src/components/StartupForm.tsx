@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import MDEditor from "@uiw/react-md-editor";
 import { Button } from "./ui/button";
 import { Send, X } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Spinner } from "@/components/ui/spinner"
@@ -40,6 +40,7 @@ type InitialValueType = {
 export default function StartupForm({isEditMode=false, initialValue=null}: {isEditMode?:boolean, initialValue?:InitialValueType|null}) {
   
     const { theme } = useTheme();
+    const imageRef = useRef(null);
     const [pitch, setPitch] = useState(initialValue?.pitch ? initialValue.pitch : "");
     const [image, setImage] = useState<File|null> (null);
     const [existingImageUrl, setExistingImageUrl] = useState(isEditMode && initialValue?.image ? getImageLink(initialValue.image).url() : null);
@@ -107,6 +108,7 @@ const handleDrop = (e: DragEvent<HTMLDivElement>) => {
 const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0];
   if (file && file.type.startsWith("image/")) {
+    if(imageRef.current !== null) imageRef.current.value = "";
     setImage(file);
   }
 };
@@ -318,6 +320,7 @@ const handleEnhancePitch = async () => {
           <Input
             type="file"
             accept="image/*"
+            ref={imageRef}
             onChange={handleImageChange}
             className="absolute w-full h-full opacity-0 cursor-pointer"
           />
