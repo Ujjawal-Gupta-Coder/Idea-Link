@@ -13,7 +13,7 @@ const page = async ( {searchParams} : {searchParams?: Promise<{query?: string}>}
   const result = await searchParams;
   const query = result?.query || null;
   const session = await auth();
-  const {data: posts} = await sanityFetch({query: STARTUPS_QUERY, params: {query}});
+  const {data: posts}:{data: StartupCardType[]} = await sanityFetch({query: STARTUPS_QUERY, params: {query}});
 
   return (
     <>

@@ -33,7 +33,7 @@ const RecentViewStartups = () => {
 
         setRecent(parsed);
 
-      } catch(err) {
+      } catch {
         console.warn("Invalid recentlyViewed format. Resetting...");
         setRecent([]);
         localStorage.removeItem("recentlyViewed");

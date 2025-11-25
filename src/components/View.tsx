@@ -5,7 +5,9 @@ import ViewClient from "./ViewClient";
 
 const View = async ({ id }: { id: string }) => {
   const {data} = await sanityFetch({query: STARTUP_VIEWS_BY_ID_QUERY, params: {id}});
-  const {views} = data;
+
+  let views = 0;
+  if(data && data.views != null ) views = data.views; 
 
   if(views === null) return null;
   return (

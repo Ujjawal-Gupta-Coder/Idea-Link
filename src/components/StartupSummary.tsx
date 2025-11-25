@@ -37,7 +37,7 @@ const StartupSummary = ({post}:{post:STARTUP_BY_SLUG_QUERYResult}) => {
             } else {
             toast.error("Nothing to copy", { theme });
             }
-        } catch (e) {
+        } catch {
             toast.error("Summary copy to clipboard failed", { theme });
         }
     };
@@ -68,7 +68,7 @@ const StartupSummary = ({post}:{post:STARTUP_BY_SLUG_QUERYResult}) => {
             setOpenSummaryBox(false);
             toast.error("Something went wrong, try again later", { theme });
             }
-        } catch (err) {
+        } catch {
             setsummaryLoading(false);
             setOpenSummaryBox(false);
             toast.error("Something wnet wrong, try again later", { theme });

@@ -29,7 +29,7 @@ const page = async ({params}: {params: Promise<{username: string}>}) => {
         <div className='relative w-[220px] h-[220px] profile_image'>
           <Image
             src={user.image ? getImageLink(user.image).url() : '/user-placeholder.png'}
-            alt={user.name}
+            alt={user.name || "User Profile"}
             fill
           />
         </div>

@@ -113,7 +113,11 @@ export const RECOMMENDED_STARTUP_QUERY = (keywords: string[], id:string|null = n
     return `count(keywords[@ match $word${i+1}])`
   }).join(" + ");
 
-  const params = {
+  const params: {
+    id: string|null,
+    limit: number,
+    [key: `word${number}`]: string
+  } = {
     id: id,
     limit,
   }

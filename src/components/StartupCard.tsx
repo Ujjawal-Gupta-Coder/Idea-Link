@@ -30,7 +30,7 @@ const StartupCard = ({ post, showMenu = false, forRecentView = false }: { post: 
 
           {
             showMenu &&
-             <StartupMenu slug={slug} startup_id={_id} email={author?.email}/>
+             <StartupMenu slug={slug!} startup_id={_id} email={author!.email!}/>
           }
 
         </div>
