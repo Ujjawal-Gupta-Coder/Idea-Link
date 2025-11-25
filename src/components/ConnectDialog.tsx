@@ -57,7 +57,7 @@ export default function ConnectDialog({senderName, senderUsername, senderMail, r
     toast.success("Email sent successfully:", {theme});
     setOpen(false);
   } 
-  catch (error) {
+  catch {
     toast.error("Email sending failed", {theme});
   }
 };

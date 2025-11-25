@@ -75,7 +75,7 @@ export const PATCH = async (req: Request) => {
   }
 
   // user authorization check
-  if (startupAuthor.author.email !== session.user.email) return Response.json({
+  if (!startupAuthor.author && startupAuthor.author!.email !== session.user.email) return Response.json({
     success: false,
     message: "User not authorized",
     data: null

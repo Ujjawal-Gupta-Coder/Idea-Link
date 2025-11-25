@@ -13,12 +13,12 @@ import { User, LogOut, PenLine } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { getFallbackAvatar, getImageLink } from "@/lib/utils";
-import { Author } from "@/sanity/types";
+import { AUTHOR_BY_EMAIL_QUERYResult } from "@/sanity/types";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 
 
-export default function UserMenu({user}: {user: Author}) {
+export default function UserMenu({user}: {user: AUTHOR_BY_EMAIL_QUERYResult}) {
     const [open, setOpen] = useState(false);
 
     const handleSignOut = async () => {
@@ -34,7 +34,7 @@ export default function UserMenu({user}: {user: Author}) {
           <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="rounded-full p-0 w-10 h-10 hover:ring-2 hover:ring-secondary">
           <Avatar className="size-10 cursor-pointer border-2 border-accent">
-              <AvatarImage  src={user.image ? getImageLink(user.image).url() : null} alt={user?.name || ""} />
+              <AvatarImage src={user?.image ? getImageLink(user.image).url(): undefined} alt={user?.name || ""} />
               <AvatarFallback> {getFallbackAvatar(user?.name || "") || "AA"} </AvatarFallback>
             </Avatar>
         </Button>
@@ -46,7 +46,7 @@ export default function UserMenu({user}: {user: Author}) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem className="hover:bg-primary-100 rounded-xl" onClick={closeDialog}>
-          <User className="mr-2 h-4 w-4" /> <Link href={`/user/${user.username}`} >Profile</Link>
+          <User className="mr-2 h-4 w-4" /> <Link href={`/user/${user!.username}`} >Profile</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem className="hover:bg-primary-100 rounded-xl" onClick={closeDialog}>
