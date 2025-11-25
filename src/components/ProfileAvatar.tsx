@@ -1,8 +1,9 @@
 import { getImageLink } from '@/lib/utils'
+import { SanityImageSource } from '@sanity/image-url/lib/types/types'
 import Image from 'next/image'
 import React from 'react'
 
-const ProfileAvatar = ({image, name}:{image:any, name:string|undefined}) => {
+const ProfileAvatar = ({image, name}:{image:SanityImageSource, name:string|undefined}) => {
   return (
     
     <div className="h-16 w-16 relative flex justify-center items-center p-[3px]">

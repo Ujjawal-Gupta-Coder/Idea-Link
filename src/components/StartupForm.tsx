@@ -132,7 +132,7 @@ const handleEnhancePitch = async () => {
   }
   
    setPitchGenerating(false)
-  } catch(e) {
+  } catch {
       toast.error("Something went wrong while generating pitch", {theme});
   }
 };
