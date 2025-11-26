@@ -106,7 +106,7 @@ const StartupSummary = ({post}:{post:STARTUP_BY_SLUG_QUERYResult}) => {
           </DialogTrigger>
 
           {/* DIALOG CONTENT */}
-          <DialogContent className="max-w-2xl bg-white font-black rounded-xl">
+          <DialogContent className="bg-white font-black rounded-xl">
             <DialogHeader>
               <DialogTitle className="text-xl font-bold flex gap-2 items-center ">
                 Startup Summary
@@ -124,12 +124,12 @@ const StartupSummary = ({post}:{post:STARTUP_BY_SLUG_QUERYResult}) => {
               </DialogTitle>
             </DialogHeader>
 
-            <div className="mt-4 text-sm text-gray-700 space-y-4">
+            <div className="mt-4 text-sm text-gray-700 dark:text-gray-200 space-y-4">
               <p>
                 {post.title} by {post.author?.name}
               </p>
 
-              <div className="p-3 bg-gray-100 rounded-lg">
+              <div className="p-3 bg-gray-100 dark:bg-gray-900 rounded-lg">
                 {summaryLoading ? (
                   <div className="flex gap-4 items-center">
                     <span>Generating ...</span>

@@ -27,7 +27,7 @@ export default async function Navbar () {
           <Image src={"/logo-dark.png"} alt="Logo" height={20} width={100}  className="hidden dark:block"/>
         </Link>
 
-        <div className="flex items-center justify-center gap-5 text-black">
+        <div className="flex items-center justify-center gap-2 md:gap-5 text-black">
           <Toggle />
           {
             user ? 

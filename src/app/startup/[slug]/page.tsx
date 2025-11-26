@@ -101,7 +101,7 @@ const page = async ({params}: {params: Promise<{slug: string}>}) => {
        <hr className="divider" />
       
       {
-        recommendedStartups?.length > 0 && <RecommendedStartups headline={"More to Explore"} startups={recommendedStartups} />
+        recommendedStartups?.length > 0 && <RecommendedStartups headline={"More to Explore"} startups={recommendedStartups} onHomePage={false}/>
       }
 
         <Suspense fallback={<Skeleton className='view_skeleton' />}>
