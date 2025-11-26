@@ -329,11 +329,11 @@
   }
 
   .view-text {
-    @apply font-medium text-[16px] bg-primary-100 px-4 py-2 rounded-lg capitalize;
+    @apply font-medium text-[16px] bg-accent/80 px-4 py-2 rounded-lg capitalize;
   }
 
   .category-tag {
-    @apply font-medium text-[16px] bg-neutral/80 px-4 py-2 rounded-full;
+    @apply font-medium text-[16px] min-w-[120px] text-center bg-neutral/80 px-4 py-2 rounded-full;
   }
 
   .tag-tri {

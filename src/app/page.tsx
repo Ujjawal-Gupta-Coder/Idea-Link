@@ -38,7 +38,7 @@ const page = async ( {searchParams} : {searchParams?: Promise<{query?: string}>}
     
 {/* Top recommendation Startups  */}
 {
-  !query && session?.user && <RecommendedStartups headline={"Top Picks for You"} startups={[]}/>
+  !query && session?.user && <RecommendedStartups headline={"Top Picks for You"} startups={[]} onHomePage={true}/>
 }
 
     {/* All Starups  */}

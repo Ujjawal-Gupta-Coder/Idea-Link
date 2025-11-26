@@ -18,9 +18,11 @@ type KeywordsResponse = {
 const RecommendedStartups = ({
   headline,
   startups,
+  onHomePage,
 }: {
   headline: string;
   startups: StartupCardType[];
+  onHomePage: boolean;
 }) => {
   const [recommended, setRecommended] = useState<StartupCardType[]>([]);
 
@@ -101,7 +103,7 @@ const RecommendedStartups = ({
 
   if (!recommended || recommended.length <= 0) return null;
   return (
-    <section className="section_container">
+    <section className={`${onHomePage? 'section_container':''}`}>
       <div className="flex items-center gap-3">
         <p className="font-semibold text-[25px] text-black">{headline}</p>
         <div className="flex">

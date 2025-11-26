@@ -54,7 +54,7 @@ export default function ConnectDialog({senderName, senderUsername, senderMail, r
       templateVariables,
       process.env.NEXT_PUBLIC_EMAILJS_API_KEY
     );
-    toast.success("Email sent successfully:", {theme});
+    toast.success("Email sent successfully", {theme});
     setOpen(false);
   } 
   catch {
@@ -66,12 +66,21 @@ export default function ConnectDialog({senderName, senderUsername, senderMail, r
   const onSubmit = async (data: FormData) => {
     if(!senderName || !senderMail) {
       toast.error("You need to be signed in to send a message to the founder", {theme});
+      reset();
       setOpen(false);
       return;
     }
     
     if(!receiverName || !startupSlug || !senderUsername || !receiverMail || !startupTitle)  {
       toast.error("Insufficient data for sending email", {theme});
+      reset();
+      setOpen(false);
+      return;
+    }
+
+    if(receiverMail && receiverMail.endsWith("@example.com")) {
+      toast.info("This is a demo account — email is turned off", {theme});
+      reset();
       setOpen(false);
       return;
     }
