@@ -5,8 +5,8 @@ const Footer = () => {
     <div className="footer-container">
       <p>© 2025 IdeaLink. ⚙️ All rights reserved. ✨ Crafted with ❤️ by </p> 
       
-      <Link href={"https://ujjawal-gupta-coder.github.io/My-Portfolio/"} className="footer-link-text">
-      Ujjawal Gupta
+      <Link href={"https://ujjawalgupta.vercel.app/"} className="footer-link-text">
+        Ujjawal Gupta
       </Link> 
       
       <p>😊</p> 
